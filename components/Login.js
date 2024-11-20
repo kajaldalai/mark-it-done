@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 
 export default function LoginScreen({ navigation }) {
@@ -14,7 +14,7 @@ export default function LoginScreen({ navigation }) {
                 password
             });
             if (response.status == 200) {
-                navigation.replace('Dashboard');
+                navigation.replace('Tasks');
             }
         } catch (error) {
             console.error('Login failed:', error);
