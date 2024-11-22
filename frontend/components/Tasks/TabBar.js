@@ -5,9 +5,9 @@ export const TabBar = () => {
     const [selectedTab, setSelectedTab] = React.useState('Kick Off');
 
     const tabs = [
-        { name: 'Kick Off', width: 108.31, height: 30, left: 6.19, color: '#ffffffff' },
-        { name: 'In Motion...', width: 123.78, height: 31, left: 127.91, color: '#ffffffff' },
-        { name: 'Victory Lap', width: 120.69, height: 30, left: 265.09, color: '#744be5ff' },
+        { name: 'Kick Off' },
+        { name: 'In Motion...'},
+        { name: 'Victory Lap' },
     ];
 
     return (
@@ -15,10 +15,10 @@ export const TabBar = () => {
             {tabs.map((tab) => (
                 <TouchableOpacity
                     key={tab.name}
-                    style={[tabBarStyles.tab, selectedTab === tab.name && tabBarStyles.selectedTab, { width: tab.width, height: tab.height }]}
+                    style={[tabBarStyles.tab, selectedTab === tab.name && tabBarStyles.selectedTab]}
                     onPress={() => setSelectedTab(tab.name)}
                 >
-                    <Text style={[tabBarStyles.tabText, selectedTab === tab.name && tabBarStyles.selectedTabText, { color: tab.color }]}>
+                    <Text style={[tabBarStyles.tabText, selectedTab === tab.name && tabBarStyles.selectedTabText]}>
                         {tab.name}
                     </Text>
                 </TouchableOpacity>
@@ -49,6 +49,7 @@ const tabBarStyles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 12,
         lineHeight: 14.52,
+        color: '#744be5'
     },
     selectedTabText: {
         color: '#ffffff',
