@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#f3edf7',
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 8,
     borderRadius: 15,
   },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     borderRadius: 16,
-    width: "33%"
+    width: "30%"
   },
   selectedNavItem: {
     backgroundColor: '#e8def8',

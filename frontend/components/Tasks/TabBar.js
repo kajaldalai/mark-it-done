@@ -32,19 +32,21 @@ const tabBarStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#fff',
         paddingVertical: 10,
     },
     tab: {
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 20,
+        borderRadius: 15,
         backgroundColor: '#f0e9ff',
+        width: '30%',
     },
     selectedTab: {
         backgroundColor: '#7a4de8',
     },
     tabText: {
+        textAlign: 'center',
         fontFamily: 'Inter',
         fontWeight: '600',
         fontSize: 12,

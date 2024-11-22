@@ -30,7 +30,7 @@ export const TaskCard = ({ title, description, dueDate, points, rewardIcon }) =>
 const taskCardStyles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: '#f9f5ff',
+    backgroundColor: '#F8F5F8',
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
@@ -40,7 +40,7 @@ const taskCardStyles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
-    marginBottom: 10,
+    marginBottom: 20,
   },
   textContainer: {
     flex: 1,

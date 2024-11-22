@@ -37,7 +37,6 @@ export const Header = () => {
                     </View>
                 </View>
                 <View style={headerStyles.icons}>
-
                     <View style={headerStyles.iconContainer}>
                         <Image
                             source={notification}
@@ -93,7 +92,6 @@ const headerStyles = StyleSheet.create({
     },
     iconText: {
         fontSize: 12,
-        color: 'gray',
     },
     // notificationBadge: {
     //     position: 'absolute',
