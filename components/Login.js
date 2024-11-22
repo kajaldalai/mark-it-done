@@ -14,7 +14,7 @@ export default function LoginScreen({ navigation }) {
                 password
             });
             if (response.status == 200) {
-                navigation.replace('Tasks');
+                navigation.replace('Kickoff');
             }
         } catch (error) {
             console.error('Login failed:', error);
