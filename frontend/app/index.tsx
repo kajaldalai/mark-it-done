@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from '../components/Welcome';
 import LoginScreen from '../components/Login';
 import DashboardScreen from '../components/Dashboard';
-import Kickoff from '../components/Tasks/Kickoff'
+import { Task } from '../components/Tasks/Task'
 
 const Stack = createStackNavigator();
 
@@ -19,7 +19,7 @@ export default function App() {
         />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Dashboard" component={DashboardScreen} />
-        <Stack.Screen name="Kickoff" component={Kickoff}/>
+        <Stack.Screen name="Task" component={Task} />
       </Stack.Navigator>
     </NavigationContainer>
   );

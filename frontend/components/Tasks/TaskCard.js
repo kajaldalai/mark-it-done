@@ -1,56 +1,84 @@
-import {StyleSheet} from 'react-native'
-import { View, Text } from 'react-native';
+import React from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import clock from '../../assets/images/clock.png'
 
-export const TaskCard = ({ title, description, dueDate, points, icon }) => (
-  <View style={styles.taskCard}>
-    <View style={styles.taskContent}>
-      <Text style={styles.taskTitle}>{title}</Text>
-      <Text style={styles.taskDescription}>{description}</Text>
-      <View style={styles.taskMeta}>
-        <Text style={styles.taskDueDate}>🕐 Due on {dueDate}</Text>
+export const TaskCard = ({ title, description, dueDate, points, rewardIcon }) => {
+  return (
+    <View style={taskCardStyles.card}>
+      <View style={taskCardStyles.textContainer}>
+        <Text style={taskCardStyles.title}>{title}</Text>
+        <Text style={taskCardStyles.description}>{description}</Text>
+        <View style={taskCardStyles.dueDateContainer}>
+          <Image
+            source={clock}
+            style={taskCardStyles.icon}
+          />
+          <Text style={taskCardStyles.dueDate}>{dueDate}</Text>
+        </View>
+      </View>
+      <View style={taskCardStyles.pointsContainer}>
+        <Image
+          source={rewardIcon}
+          style={taskCardStyles.pointsIcon}
+        />
+        <Text style={taskCardStyles.points}>{points}</Text>
       </View>
     </View>
-    <View style={styles.pointsBadge}>
-      <Text style={styles.pointsValue}>{points}</Text>
-    </View>
-  </View>
-);
+  );
+};
 
-const styles = StyleSheet.create({
-  taskCard: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 16,
-    marginHorizontal: 16,
-    marginBottom: 16,
+const taskCardStyles = StyleSheet.create({
+  card: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  taskTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  taskDescription: {
-    color: '#666',
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  taskDueDate: {
-    color: '#999',
-    fontSize: 12,
-  },
-  pointsBadge: {
-    backgroundColor: '#F0F0F0',
-    borderRadius: 12,
-    padding: 8,
-    justifyContent: 'center',
+    backgroundColor: '#f9f5ff',
+    borderRadius: 10,
+    padding: 15,
     alignItems: 'center',
-    minWidth: 40,
-  }
-})
+    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    marginBottom: 10,
+  },
+  textContainer: {
+    flex: 1,
+    marginRight: 10,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  description: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 10,
+  },
+  dueDateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 16,
+    height: 16,
+    marginRight: 5,
+  },
+  dueDate: {
+    fontSize: 13,
+    color: '#7e57c2',
+  },
+  pointsContainer: {
+    alignItems: 'center',
+  },
+  pointsIcon: {
+    width: 32,
+    height: 32,
+  },
+  points: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#555',
+  },
+});

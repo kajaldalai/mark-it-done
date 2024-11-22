@@ -43,6 +43,10 @@ export const ActionButton = ({ title, isActive, onPress }) => (
     </TouchableOpacity>
 );
 
+export const Header = () => {
+    
+}
+
 const styles = StyleSheet.create({
     avatarContainer: {
         flexDirection: 'row',

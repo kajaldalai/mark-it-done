@@ -7,19 +7,17 @@ export default function LoginScreen({ navigation }) {
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
-        // Call API here for login
         try {
             const response = await axios.post('http://192.168.0.11:3000/login', {
                 email,
                 password
             });
             if (response.status == 200) {
-                navigation.replace('Kickoff');
+                navigation.replace('Task');
             }
         } catch (error) {
             console.error('Login failed:', error);
         }
-        // navigation.navigate('Dashboard');
     };
 
     return (
