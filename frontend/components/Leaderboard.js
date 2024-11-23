@@ -13,12 +13,12 @@ import { NavigationBar } from './Navbar';
 export const Leaderboard = () => {
   const users = [
     { rank: 4, name: 'Anvit Patel', score: '7,900', icon: avatar },
-    { rank: 5, name: 'John T', score: '7,700', highlight: true, icon: user5.png },
-    { rank: 6, name: 'Maggie D', score: '7,500', icon: user6.png },
-    { rank: 7, name: 'Greg Goerge', score: '7,200', icon: user7.png },
-    { rank: 8, name: 'Ishaan P', score: '6,800', icon: user8.png },
-    { rank: 9, name: 'Tian Lee', score: '6,600', icon: user9.png },
-    { rank: 10, name: 'Ellie M', score: '6,300', icon: user4.png },
+    { rank: 5, name: 'John T', score: '7,700', highlight: true, icon: user5 },
+    { rank: 6, name: 'Maggie D', score: '7,500', icon: user6 },
+    { rank: 7, name: 'Greg Goerge', score: '7,200', icon: user7 },
+    { rank: 8, name: 'Ishaan P', score: '6,800', icon: user8 },
+    { rank: 9, name: 'Tian Lee', score: '6,600', icon: user9 },
+    { rank: 10, name: 'Ellie M', score: '6,300', icon: user4 },
   ];
 
   return (
@@ -71,10 +71,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    width: 60,
-    height: 60,
+    width: 45,
+    height: 45,
     borderRadius: 30,
-    marginBottom: 10,
+    // marginBottom: 10,
+    // justifyContent: 'center'
   },
   topUserName: {
     fontSize: 14,
@@ -119,6 +120,8 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: '#000',
+    paddingLeft: 10,
+    justifyContent: 'center'
   },
   userScore: {
     fontSize: 16,

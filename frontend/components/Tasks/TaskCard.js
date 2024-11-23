@@ -55,6 +55,7 @@ const taskCardStyles = StyleSheet.create({
     fontSize: 14,
     color: '#555',
     marginBottom: 10,
+    fontStyle: 'italic'
   },
   dueDateContainer: {
     flexDirection: 'row',
