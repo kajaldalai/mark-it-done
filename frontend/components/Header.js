@@ -93,19 +93,4 @@ const headerStyles = StyleSheet.create({
     iconText: {
         fontSize: 12,
     },
-    // notificationBadge: {
-    //     position: 'absolute',
-    //     top: -5,
-    //     right: -10,
-    //     backgroundColor: 'red',
-    //     borderRadius: 10,
-    //     width: 20,
-    //     height: 20,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    // },
-    // notificationText: {
-    //     color: 'white',
-    //     fontSize: 10,
-    // },
 });

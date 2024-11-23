@@ -3,9 +3,16 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import home from '../assets/images/home.png'
 import leaderboard from '../assets/images/leaderboard.png'
 import rewards from '../assets/images/rewards.png'
+import { useNavigation } from '@react-navigation/native';
 
 export const NavigationBar = () => {
   const [selected, setSelected] = useState('Home');
+  const navigation = useNavigation();
+
+  const handleSelection = ({ selection }) => {
+    setSelected(selection)
+    navigation.navigate(selection);
+  }
 
   const navItems = [
     { name: 'Home', icon: home },
@@ -22,7 +29,7 @@ export const NavigationBar = () => {
             styles.navItem,
             selected === item.name && styles.selectedNavItem,
           ]}
-          onPress={() => setSelected(item.name)}
+          onPress={() => handleSelection({ selection: item.name })}
         >
           <View style={styles.iconContainer}>
             <Image source={item.icon} style={styles.icon} />
