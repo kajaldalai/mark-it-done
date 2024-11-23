@@ -17,30 +17,27 @@ export const Header = () => {
                     <Text style={headerStyles.userName}>John</Text>
                     <Text style={headerStyles.userStatus}>Morning!</Text>
                 </View>
-                <View style={headerStyles.icons}>
-                    <View style={headerStyles.iconContainer}>
+                <View style={headerStyles.rewardIcon}>
+                    <View style={headerStyles.rewardContainer}>
                         <Image
                             source={reward}
-                            style={headerStyles.icon}
                         />
                         <Text style={headerStyles.iconText}>4500</Text>
                     </View>
                 </View>
-                <View style={headerStyles.icons}>
-
-                    <View style={headerStyles.iconContainer}>
+                <View style={headerStyles.badgeIcon}>
+                    <View style={headerStyles.badgeContainer}>
                         <Image
                             source={badge}
-                            style={headerStyles.icon}
                         />
                         <Text style={headerStyles.iconText}>2</Text>
                     </View>
                 </View>
-                <View style={headerStyles.icons}>
-                    <View style={headerStyles.iconContainer}>
+                <View style={headerStyles.notificationIcon}>
+                    <View style={headerStyles.notificationContainer}>
                         <Image
                             source={notification}
-                            style={headerStyles.icon}
+                            style={headerStyles.notificationIcon}
                         />
                     </View>
                 </View>
@@ -66,7 +63,8 @@ const headerStyles = StyleSheet.create({
         borderRadius: 20,
     },
     headerLabel: {
-        marginLeft: 5,
+        marginLeft: 7,
+        marginRight: 12
     },
     userName: {
         fontFamily: 'Acme',
@@ -82,15 +80,37 @@ const headerStyles = StyleSheet.create({
         lineHeight: 18,
         color: '#475467',
     },
-    icons: {
-        alignItems: 'center',
-        marginLeft: '10%',
-        flexDirection: 'row',
-    },
-    iconContainer: {
-        alignItems: 'center',
-    },
     iconText: {
         fontSize: 12,
     },
+    notificationIcon: {
+        alignItems: 'center',
+        marginLeft: '12%',
+        flexDirection: 'row',
+        width: 36,
+        height: 35
+    },
+    notificationContainer: {
+        alignItems: 'center',
+    },
+    rewardIcon: {
+        alignItems: 'center',
+        marginLeft: '10%',
+        flexDirection: 'row',
+        width: 34,
+        height: 34
+    },
+    rewardContainer: {
+        alignItems: 'center',
+    },
+    badgeIcon: {
+        alignItems: 'center',
+        marginLeft: '12%',
+        flexDirection: 'row',
+        width: 36,
+        height: 35
+    },
+    badgeContainer: {
+        alignItems: 'center',
+    }
 });
