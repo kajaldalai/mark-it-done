@@ -3,12 +3,31 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import google from '../assets/images/google.png'
+import { authenticateUser } from './database';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({ navigation }) {
-    //   const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const handleLogin = async () => {
+        try {
+            const user = await authenticateUser(email, password);
+            if (user) {
+                await AsyncStorage.setItem('user', JSON.stringify(user));
+                navigation.navigate('Task');
+            } else {
+                setError('Invalid email or password');
+            }
+        } catch (err) {
+            setError(err.message);
+        }
+    };
 
     return (
         <View style={styles.container}>
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
             <Text style={styles.title}>Almost there...</Text>
             <Text style={styles.subtitle}>Login with your school credentials</Text>
             <View style={styles.form}>
@@ -18,6 +37,8 @@ export default function LoginScreen({ navigation }) {
                         style={styles.input}
                         placeholder="student@hawk.iit.edu"
                         placeholderTextColor="#b3b3b3"
+                        value={email}
+                        onChangeText={setEmail}
                     />
                 </View>
                 <View style={styles.inputField}>
@@ -27,11 +48,13 @@ export default function LoginScreen({ navigation }) {
                         placeholder="********"
                         placeholderTextColor="#b3b3b3"
                         secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
                     />
                 </View>
                 <TouchableOpacity
                     style={styles.signInButton}
-                    onPress={() => navigation.navigate('Task')}
+                    onPress={handleLogin}
                 >
                     <Text style={styles.signInButtonText}>Sign in</Text>
                 </TouchableOpacity>
@@ -164,5 +187,10 @@ const styles = StyleSheet.create({
     },
     linkText: {
         color: '#744be5',
+    },
+    errorText: {
+        color: 'red',
+        textAlign: 'center',
+        marginBottom: 10,
     },
 });

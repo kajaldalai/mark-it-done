@@ -6,6 +6,14 @@ const db = SQLite.openDatabaseSync('tasks.db');
 export const initDatabase = () => {
   db.execSync(`
     PRAGMA foreign_keys = ON;
+    
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      name TEXT NOT NULL
+    );
+
     CREATE TABLE IF NOT EXISTS tasks (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
@@ -16,6 +24,10 @@ export const initDatabase = () => {
       status TEXT DEFAULT 'kickoff' CHECK(status IN ('kickoff', 'inmotion', 'victorylap'))
     );
   `);
+
+  // Call insertInitialUsers right after creating tables
+  insertInitialUsers();
+  insertInitialTasks();
 };
 
 export const insertInitialTasks = () => {
@@ -41,6 +53,15 @@ export const insertInitialTasks = () => {
     VALUES 
       ('CS460 Lab Report', 'Great job completing this task! 🎉', 'Submitted on Nov 5', 200, 'redreward', 'victorylap'),
       ('CS590 Presentation', 'Successfully delivered and well received! 🥳', 'Submitted on Nov 8', 450, 'multireward', 'victorylap');
+  `);
+};
+
+export const insertInitialUsers = () => {
+  db.execSync(`
+    DELETE FROM users;
+    INSERT INTO users (email, password, name) VALUES 
+    ('john.tim@iit.edu', 'pwd456', 'John Tim'),
+    ('kdalai@hawk.iit.edu', 'pwd123', 'Jane Smith');
   `);
 };
 
@@ -81,4 +102,17 @@ export const updateTaskStatus = async (taskId, newStatus) => {
       [newStatus, taskId]
     );
   }
+};
+
+export const authenticateUser = async (email, password) => {
+  if (!email.endsWith('.edu')) {
+    throw new Error('Only .edu email addresses are allowed');
+  }
+
+  const users = await db.getAllAsync(
+    'SELECT * FROM users WHERE email = ? AND password = ?',
+    [email, password]
+  );
+  
+  return users[0] || null;
 };

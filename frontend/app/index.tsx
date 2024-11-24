@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native'; // Import NavigationContainer
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from '../components/Welcome';
@@ -9,10 +9,16 @@ import { Leaderboard } from '../components/Leaderboard'
 import { Rewards } from '../components/Rewards'
 import { ProfileScreen } from '../components/Profile'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { initDatabase } from '@/components/database';
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    // Initialize database when app starts
+    initDatabase();
+  }, []);
+  
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
     <NavigationContainer>

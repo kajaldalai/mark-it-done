@@ -9,12 +9,21 @@ import linkedin from '../assets/images/linkedin.png';
 import podium from '../assets/images/podium.png';
 import github from '../assets/images/github.png';
 import location from '../assets/images/location.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ProfileScreen = () => {
   const navigation = useNavigation();
 
-  const handleNavigation = (screen) => {
-    navigation.navigate(screen);
+  const handleNavigation = async (screen) => {
+    if (screen === 'Logout') {
+      await AsyncStorage.removeItem('user');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+    } else {
+      navigation.navigate(screen);
+    }
   };
 
   return (
