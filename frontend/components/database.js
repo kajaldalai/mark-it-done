@@ -47,25 +47,23 @@ export const insertInitialTasks = () => {
 
 export const getTasks = async (status) => {
   const tasks = await db.getAllAsync(
-    'SELECT * FROM tasks WHERE status = ? ORDER BY id ASC',
+    'SELECT * FROM tasks WHERE status = ? ORDER BY id ASC', // Changed DESC to ASC
     [status]
   );
   return tasks;
 };
 
 export const updateTaskStatus = async (taskId, newStatus) => {
-  // First, get the maximum order of tasks in the target status
   const maxOrderResult = await db.getAllAsync(
     'SELECT MAX(id) as maxId FROM tasks WHERE status = ?',
     [newStatus]
   );
   
-  // Update the task's status and ensure it appears at the top
   await db.runAsync(
     `UPDATE tasks 
      SET status = ?,
-         id = (SELECT COALESCE(MIN(id), 0) - 1 FROM tasks)
+         id = (SELECT COALESCE(MAX(id), 0) + 1 FROM tasks)
      WHERE id = ?`,
     [newStatus, taskId]
   );
-}; 
+};

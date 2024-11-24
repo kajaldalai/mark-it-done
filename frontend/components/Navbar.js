@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import home from '../assets/images/home.png'
 import leaderboard from '../assets/images/leaderboard.png'
 import rewards from '../assets/images/rewards.png'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 export const NavigationBar = () => {
-  const [selected, setSelected] = useState('Home');
   const navigation = useNavigation();
+  const route = useRoute();
 
-  const handleSelection = ({ selection }) => {
-    setSelected(selection)
-    navigation.navigate(selection);
+  const handleSelection = (screenName) => {
+    navigation.navigate(screenName);
   }
 
   const navItems = [
@@ -27,9 +26,9 @@ export const NavigationBar = () => {
           key={item.name}
           style={[
             styles.navItem,
-            selected === item.name && styles.selectedNavItem,
+            route.name === item.name && styles.selectedNavItem,
           ]}
-          onPress={() => handleSelection({ selection: item.name })}
+          onPress={() => handleSelection(item.name)}
         >
           <View style={styles.iconContainer}>
             <Image source={item.icon} style={styles.icon} />
@@ -37,7 +36,7 @@ export const NavigationBar = () => {
           <Text
             style={[
               styles.label,
-              selected === item.name && styles.selectedLabel,
+              route.name === item.name && styles.selectedLabel,
             ]}
           >
             {item.name}
