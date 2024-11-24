@@ -7,11 +7,13 @@ import DashboardScreen from '../components/Dashboard';
 import { Task } from '../components/Tasks/Task'
 import { Leaderboard } from '../components/Leaderboard'
 import { Rewards } from '../components/Rewards'
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome" screenOptions={{ headerShown: false }}>
         <Stack.Screen
@@ -26,5 +28,6 @@ export default function App() {
         <Stack.Screen name="Rewards" component={Rewards} />
       </Stack.Navigator>
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }

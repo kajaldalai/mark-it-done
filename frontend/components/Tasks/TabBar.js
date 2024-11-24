@@ -1,13 +1,11 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export const TabBar = () => {
-    const [selectedTab, setSelectedTab] = React.useState('Kick Off');
-
+export const TabBar = ({ activeTab, onTabChange }) => {
     const tabs = [
-        { name: 'Kick Off' },
-        { name: 'In Motion...'},
-        { name: 'Victory Lap' },
+        { name: 'kickoff', label: 'Kick Off' },
+        { name: 'inmotion', label: 'In Motion...' },
+        { name: 'victorylap', label: 'Victory Lap' },
     ];
 
     return (
@@ -15,11 +13,17 @@ export const TabBar = () => {
             {tabs.map((tab) => (
                 <TouchableOpacity
                     key={tab.name}
-                    style={[tabBarStyles.tab, selectedTab === tab.name && tabBarStyles.selectedTab]}
-                    onPress={() => setSelectedTab(tab.name)}
+                    style={[
+                        tabBarStyles.tab, 
+                        activeTab === tab.name && tabBarStyles.selectedTab
+                    ]}
+                    onPress={() => onTabChange(tab.name)}
                 >
-                    <Text style={[tabBarStyles.tabText, selectedTab === tab.name && tabBarStyles.selectedTabText]}>
-                        {tab.name}
+                    <Text style={[
+                        tabBarStyles.tabText, 
+                        activeTab === tab.name && tabBarStyles.selectedTabText
+                    ]}>
+                        {tab.label}
                     </Text>
                 </TouchableOpacity>
             ))}
