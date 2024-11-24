@@ -7,6 +7,7 @@ import { TaskList } from "./TaskList";
 import { Header } from '../Header';
 import { NavigationBar } from '../Navbar';
 import { TabBar } from './TabBar';
+import { isWithinDays } from '../utils/date';
 
 // Import your reward images
 const rewardImages = {
@@ -14,6 +15,8 @@ const rewardImages = {
   yellowreward: require('../../assets/images/yellowreward.png'),
   redreward: require('../../assets/images/redreward.png'),
   multireward: require('../../assets/images/multireward.png'),
+  redclock: require('../../assets/images/redclock.png'),
+  submitted: require('../../assets/images/submitted.png'),
 };
 
 export const Task = () => {

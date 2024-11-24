@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import clock from '../../assets/images/clock.png'
+import clock from '../../assets/images/clock.png';
+import submitted from '../../assets/images/submitted.png';
 
-export const TaskCard = ({ title, description, dueDate, points, rewardIcon }) => {
+export const TaskCard = ({ title, description, dueDate, points, rewardIcon, status }) => {
+  const timeIcon = status === 'victorylap' ? submitted : clock;
+
   return (
     <View style={taskCardStyles.card}>
       <View style={taskCardStyles.textContainer}>
@@ -10,7 +13,7 @@ export const TaskCard = ({ title, description, dueDate, points, rewardIcon }) =>
         <Text style={taskCardStyles.description}>{description}</Text>
         <View style={taskCardStyles.dueDateContainer}>
           <Image
-            source={clock}
+            source={timeIcon}
             style={taskCardStyles.icon}
           />
           <Text style={taskCardStyles.dueDate}>{dueDate}</Text>

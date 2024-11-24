@@ -39,8 +39,8 @@ export const insertInitialTasks = () => {
     -- Victory Lap Tasks
     INSERT INTO tasks (title, description, dueDate, points, rewardIcon, status)
     VALUES 
-      ('CS460 Lab Report', 'Great job completing this task!', 'Completed Nov 5', 200, 'redreward', 'victorylap'),
-      ('CS590 Presentation', 'Successfully delivered and well received!', 'Completed Nov 8', 450, 'multireward', 'victorylap');
+      ('CS460 Lab Report', 'Great job completing this task!', 'Submitted on Nov 5', 200, 'redreward', 'victorylap'),
+      ('CS590 Presentation', 'Successfully delivered and well received!', 'Submitted on Nov 8', 450, 'multireward', 'victorylap');
   `);
 };
 
@@ -58,11 +58,25 @@ export const updateTaskStatus = async (taskId, newStatus) => {
     [newStatus]
   );
   
-  await db.runAsync(
-    `UPDATE tasks 
-     SET status = ?,
-         id = (SELECT COALESCE(MAX(id), 0) + 1 FROM tasks)
-     WHERE id = ?`,
-    [newStatus, taskId]
-  );
+  // Add celebration emoji for victory lap
+  const updates = [newStatus];
+  if (newStatus === 'victorylap') {
+    await db.runAsync(
+      `UPDATE tasks 
+       SET status = ?,
+           id = (SELECT COALESCE(MAX(id), 0) + 1 FROM tasks),
+           description = description || ' 🎉',
+           rewardIcon = 'submitted'
+       WHERE id = ?`,
+      [newStatus, taskId]
+    );
+  } else {
+    await db.runAsync(
+      `UPDATE tasks 
+       SET status = ?,
+           id = (SELECT COALESCE(MAX(id), 0) + 1 FROM tasks)
+       WHERE id = ?`,
+      [newStatus, taskId]
+    );
+  }
 };
