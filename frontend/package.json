@@ -41,7 +41,8 @@
     "react-native-screens": "~4.1.0",
     "react-native-web": "~0.19.13",
     "react-redux": "^9.0.4",
-    "expo-sqlite": "~15.0.3"
+    "expo-sqlite": "~15.0.3",
+    "expo-blur": "~14.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

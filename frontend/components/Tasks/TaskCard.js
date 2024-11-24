@@ -2,9 +2,30 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import clock from '../../assets/images/clock.png';
 import submitted from '../../assets/images/submitted.png';
+import { BlurView } from 'expo-blur';
 
 export const TaskCard = ({ title, description, dueDate, points, rewardIcon, status }) => {
   const timeIcon = status === 'victorylap' ? submitted : clock;
+
+  const renderPointsIcon = () => {
+    if (status === 'victorylap') {
+      return (
+        <Image
+          source={rewardIcon}
+          style={taskCardStyles.pointsIcon}
+        />
+      );
+    }
+    
+    return (
+      <BlurView intensity={50} style={taskCardStyles.blurContainer}>
+        <Image
+          source={rewardIcon}
+          style={[taskCardStyles.pointsIcon, taskCardStyles.blurredIcon]}
+        />
+      </BlurView>
+    );
+  };
 
   return (
     <View style={taskCardStyles.card}>
@@ -20,10 +41,7 @@ export const TaskCard = ({ title, description, dueDate, points, rewardIcon, stat
         </View>
       </View>
       <View style={taskCardStyles.pointsContainer}>
-        <Image
-          source={rewardIcon}
-          style={taskCardStyles.pointsIcon}
-        />
+        {renderPointsIcon()}
         <Text style={taskCardStyles.points}>{points}</Text>
       </View>
     </View>
@@ -75,6 +93,13 @@ const taskCardStyles = StyleSheet.create({
   },
   pointsContainer: {
     alignItems: 'center',
+  },
+  blurContainer: {
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  blurredIcon: {
+    opacity: 0.3,
   },
   pointsIcon: {
     width: 32,
