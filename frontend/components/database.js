@@ -18,7 +18,6 @@ export const initDatabase = () => {
   `);
 };
 
-// Insert initial tasks if they don't exist
 export const insertInitialTasks = () => {
   db.execSync(`
     DELETE FROM tasks;
@@ -47,7 +46,7 @@ export const insertInitialTasks = () => {
 
 export const getTasks = async (status) => {
   const tasks = await db.getAllAsync(
-    'SELECT * FROM tasks WHERE status = ? ORDER BY id ASC', // Changed DESC to ASC
+    'SELECT * FROM tasks WHERE status = ? ORDER BY id ASC',
     [status]
   );
   return tasks;

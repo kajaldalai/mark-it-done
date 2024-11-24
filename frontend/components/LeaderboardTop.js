@@ -20,7 +20,7 @@ export const LeaderboardTop = () => {
             key={index}
             style={[
               styles.topUser,
-              index === 1 && styles.centerUser, // Apply different style for the center user
+              index === 1 && styles.centerUser,
             ]}
           >
             <Image source={user.icon} style={styles.avatar} />
@@ -66,8 +66,8 @@ topUser: {
     marginHorizontal: 5,
   },
   centerUser: {
-    height: 150, // Slightly bigger
-    marginTop: -20, // Shifted up
+    height: 150,
+    marginTop: -20,
   },
   avatar: {
     width: 60,
