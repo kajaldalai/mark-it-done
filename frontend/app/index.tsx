@@ -7,6 +7,7 @@ import DashboardScreen from '../components/Dashboard';
 import { Task } from '../components/Tasks/Task'
 import { Leaderboard } from '../components/Leaderboard'
 import { Rewards } from '../components/Rewards'
+import { ProfileScreen } from '../components/Profile'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
@@ -26,6 +27,7 @@ export default function App() {
         <Stack.Screen name="Leaderboard" component={Leaderboard} />
         <Stack.Screen name="Home" component={Task} />
         <Stack.Screen name="Rewards" component={Rewards} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     </GestureHandlerRootView>

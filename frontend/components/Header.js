@@ -4,15 +4,20 @@ import avatar from '../assets/images/avatar.png';
 import reward from '../assets/images/reward.png';
 import badge from '../assets/images/badge.png';
 import notification from '../assets/images/notification.png';
+import { useNavigation } from '@react-navigation/native';
 
 export const Header = () => {
+    const navigation = useNavigation();
+
     return (
         <View style={headerStyles.container}>
             <View style={headerStyles.content}>
-                <Image
-                    source={avatar}
-                    style={headerStyles.avatar}
-                />
+                <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                    <Image
+                        source={avatar}
+                        style={headerStyles.avatar}
+                    />
+                </TouchableOpacity>
                 <View style={headerStyles.headerLabel}>
                     <Text style={headerStyles.userName}>John</Text>
                     <Text style={headerStyles.userStatus}>Morning!</Text>
