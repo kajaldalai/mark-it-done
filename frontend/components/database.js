@@ -23,11 +23,30 @@ export const initDatabase = () => {
       rewardIcon TEXT,
       status TEXT DEFAULT 'kickoff' CHECK(status IN ('kickoff', 'inmotion', 'victorylap'))
     );
+
+    CREATE TABLE IF NOT EXISTS rewards (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      points INTEGER NOT NULL,
+      image_url TEXT NOT NULL,
+      is_locked BOOLEAN DEFAULT 0
+    );
+
+    CREATE TABLE IF NOT EXISTS user_rewards (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      reward_id INTEGER,
+      redeemed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      expiry_date TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (reward_id) REFERENCES rewards(id)
+    );
   `);
 
-  // Call insertInitialUsers right after creating tables
+  // Call initial data insertion
   insertInitialUsers();
   insertInitialTasks();
+  insertInitialRewards();
 };
 
 export const insertInitialTasks = () => {
@@ -60,8 +79,21 @@ export const insertInitialUsers = () => {
   db.execSync(`
     DELETE FROM users;
     INSERT INTO users (email, password, name) VALUES 
-    ('john.tim@iit.edu', 'pwd456', 'John Tim'),
-    ('kdalai@hawk.iit.edu', 'pwd123', 'Jane Smith');
+    ('kdalai@hawk.iit.edu', 'pwd123', 'Kajal Dalai'),
+    ('john.tim@iit.edu', 'pwd456', 'John Tim');
+  `);
+};
+
+export const insertInitialRewards = () => {
+  db.execSync(`
+    DELETE FROM rewards;
+    INSERT INTO rewards (name, points, image_url, is_locked) VALUES 
+      ('Pizza Slice', 2500, 'pizza', 0),
+      ('Coffee', 1500, 'coffee', 0),
+      ('Donut', 2200, 'donut', 0),
+      ('Potato Chips', 3000, 'chips', 0),
+      ('Cupcake', 4400, 'cupcake', 1),
+      ('Hot Dog', 5000, 'hotdog', 1);
   `);
 };
 
@@ -115,4 +147,35 @@ export const authenticateUser = async (email, password) => {
   );
   
   return users[0] || null;
+};
+
+export const getRewards = async (type, userId) => {
+  if (type === 'available') {
+    return await db.getAllAsync(`
+      SELECT r.* 
+      FROM rewards r
+      LEFT JOIN user_rewards ur 
+        ON r.id = ur.reward_id AND ur.user_id = ?
+      WHERE ur.id IS NULL
+      ORDER BY r.points ASC
+    `, [userId]);
+  } else {
+    return await db.getAllAsync(`
+      SELECT r.*, ur.redeemed_at, ur.expiry_date 
+      FROM rewards r
+      JOIN user_rewards ur ON r.id = ur.reward_id
+      WHERE ur.user_id = ?
+      ORDER BY ur.redeemed_at DESC
+    `, [userId]);
+  }
+};
+
+export const redeemReward = async (userId, rewardId) => {
+  const expiryDate = new Date();
+  expiryDate.setMonth(expiryDate.getMonth() + 3); // Set expiry to 3 months from now
+
+  await db.runAsync(`
+    INSERT INTO user_rewards (user_id, reward_id, expiry_date)
+    VALUES (?, ?, ?)
+  `, [userId, rewardId, expiryDate.toISOString()]);
 };

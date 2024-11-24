@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native'; // Import NavigationContainer
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from '../components/Welcome';
 import LoginScreen from '../components/Login';
@@ -15,7 +15,6 @@ const Stack = createStackNavigator();
 
 export default function App() {
   useEffect(() => {
-    // Initialize database when app starts
     initDatabase();
   }, []);
   
