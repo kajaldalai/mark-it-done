@@ -42,7 +42,7 @@ const tabBarStyles = StyleSheet.create({
     tab: {
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 15,
+        borderRadius: 10,
         backgroundColor: '#f0e9ff',
         width: '30%',
     },
