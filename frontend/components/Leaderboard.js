@@ -9,11 +9,25 @@ import user8 from '../assets/images/user8.png'
 import user9 from '../assets/images/user9.png'
 import avatar from '../assets/images/avatar.png'
 import { NavigationBar } from './Navbar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Leaderboard = () => {
+  const [userName, setUserName] = React.useState('');
+
+  React.useEffect(() => {
+    const getUserName = async () => {
+      const user = await AsyncStorage.getItem('user');
+      if (user) {
+        const parsedUser = JSON.parse(user);
+        setUserName(parsedUser.name || '');
+      }
+    };
+    getUserName();
+  }, []);
+
   const users = [
     { rank: 4, name: 'Anvit Patel', score: '7,900', icon: avatar },
-    { rank: 5, name: 'John T', score: '7,700', highlight: true, icon: user5 },
+    { rank: 5, name: userName, score: '7,700', highlight: true, icon: user5 },
     { rank: 6, name: 'Maggie D', score: '7,500', icon: user6 },
     { rank: 7, name: 'Greg Goerge', score: '7,200', icon: user7 },
     { rank: 8, name: 'Ishaan P', score: '6,800', icon: user8 },

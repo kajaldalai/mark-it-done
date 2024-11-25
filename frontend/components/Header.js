@@ -5,9 +5,22 @@ import reward from '../assets/images/reward.png';
 import badge from '../assets/images/badge.png';
 import notification from '../assets/images/notification.png';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Header = () => {
     const navigation = useNavigation();
+    const [userName, setUserName] = React.useState('');
+
+    React.useEffect(() => {
+        const getUserName = async () => {
+            const user = await AsyncStorage.getItem('user');
+            if (user) {
+                const parsedUser = JSON.parse(user);
+                setUserName(parsedUser.name || '');
+            }
+        };
+        getUserName();
+    }, []);
 
     return (
         <View style={headerStyles.container}>
@@ -19,7 +32,7 @@ export const Header = () => {
                     />
                 </TouchableOpacity>
                 <View style={headerStyles.headerLabel}>
-                    <Text style={headerStyles.userName}>John</Text>
+                    <Text style={headerStyles.userName}>{userName}</Text>
                     <Text style={headerStyles.userStatus}>Morning!</Text>
                 </View>
                 <View style={headerStyles.rewardIcon}>

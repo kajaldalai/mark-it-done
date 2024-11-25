@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from '../components/Welcome';
 import LoginScreen from '../components/Login';
-import DashboardScreen from '../components/Dashboard';
 import { Task } from '../components/Tasks/Task'
 import { Leaderboard } from '../components/Leaderboard'
 import { Rewards } from '../components/Rewards'
@@ -29,7 +28,6 @@ export default function App() {
             component={WelcomeScreen}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Dashboard" component={DashboardScreen} />
           <Stack.Screen name="Task" component={Task} />
           <Stack.Screen name="Leaderboard" component={Leaderboard} />
           <Stack.Screen name="Home" component={Task} />

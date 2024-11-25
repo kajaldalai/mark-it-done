@@ -13,6 +13,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ProfileScreen = () => {
   const navigation = useNavigation();
+  const [userName, setUserName] = React.useState('');
+
+  React.useEffect(() => {
+    const getUserName = async () => {
+      const user = await AsyncStorage.getItem('user');
+      if (user) {
+        const parsedUser = JSON.parse(user);
+        setUserName(parsedUser.name || '');
+      }
+    };
+    getUserName();
+  }, []);
 
   const handleNavigation = async (screen) => {
     if (screen === 'Logout') {
@@ -34,7 +46,7 @@ export const ProfileScreen = () => {
             source={avatar}
             style={styles.profilePicture}
           />
-          <Text style={styles.name}>John Tim</Text>
+          <Text style={styles.name}>{userName}</Text>
           <Text style={styles.institution}>Illinois Institute of Technology</Text>
           <View style={styles.iconsContainer}>
             <Image source={location} style={styles.icon} />

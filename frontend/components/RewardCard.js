@@ -16,31 +16,35 @@ const rewardImages = {
 export const RewardCard = ({ reward }) => {
     return (
         <TouchableOpacity style={styles.card}>
-            <Image 
-                source={rewardImages[reward.image_url]}
-                style={styles.image}
-            />
-            <Text style={styles.name}>{reward.name}</Text>
-            <View style={styles.pointsContainer}>
+            <View style={styles.cardContent}>
                 <Image 
-                    source={rewardIcon}
-                    style={styles.diamond}
+                    source={rewardImages[reward.image_url]}
+                    style={styles.image}
                 />
-                <Text style={styles.points}>{reward.points}</Text>
-            </View>
-            {reward.expiry_date && (
-                    <Text style={styles.expiry}>
-                        {new Date(reward.expiry_date).toLocaleDateString()}
-                    </Text>
-            )}
-            {reward.is_locked && (
-                <View style={styles.lockedOverlay}>
-                    <Image 
-                        source={lock}
-                        style={styles.lockIcon}
-                    />
+                <View style={styles.textContainer}>
+                    <Text style={styles.name}>{reward.name}</Text>
+                    <View style={styles.pointsContainer}>
+                        <Image 
+                            source={rewardIcon}
+                            style={styles.diamond}
+                        />
+                        <Text style={styles.points}>{reward.points}</Text>
+                    </View>
+                    {reward.expiry_date && (
+                        <Text style={styles.expiry}>
+                            {new Date(reward.expiry_date).toLocaleDateString()}
+                        </Text>
+                    )}
                 </View>
-            )}
+                {reward.is_locked && (
+                    <View style={styles.lockedOverlay}>
+                        <Image 
+                            source={lock}
+                            style={styles.lockIcon}
+                        />
+                    </View>
+                )}
+            </View>
         </TouchableOpacity>
     );
 };
@@ -91,5 +95,13 @@ const styles = StyleSheet.create({
     lockIcon: {
         width: 20,
         height: 20,
+    },
+    cardContent: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    textContainer: {
+        width: '100%',
+        alignItems: 'center',
     },
 }); 
