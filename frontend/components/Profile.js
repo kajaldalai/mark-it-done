@@ -60,7 +60,7 @@ export const ProfileScreen = () => {
 
         <View style={styles.menuContainer}>
           {[
-            { name: 'All completed tasks', screen: 'Tasks' },
+            { name: 'All Completed Tasks', screen: 'Tasks' },
             { name: 'Rewards', screen: 'Rewards' },
             { name: 'Leaderboard', screen: 'Leaderboard' },
             { name: 'Notifications', screen: 'Notifications' },

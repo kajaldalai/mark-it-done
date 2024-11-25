@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "cs495-tech-test",
-    "slug": "cs495-tech-test",
+    "name": "mark-it-done",
+    "slug": "mark-it-done",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

@@ -29,9 +29,9 @@ export const RewardCard = ({ reward }) => {
                 <Text style={styles.points}>{reward.points}</Text>
             </View>
             {reward.expiry_date && (
-                <Text style={styles.expiry}>
-                    {new Date(reward.expiry_date).toLocaleDateString()}
-                </Text>
+                    <Text style={styles.expiry}>
+                        {new Date(reward.expiry_date).toLocaleDateString()}
+                    </Text>
             )}
             {reward.is_locked && (
                 <View style={styles.lockedOverlay}>
