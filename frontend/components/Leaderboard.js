@@ -7,7 +7,7 @@ import user6 from '../assets/images/user6.png'
 import user7 from '../assets/images/user7.png'
 import user8 from '../assets/images/user8.png'
 import user9 from '../assets/images/user9.png'
-import avatar from '../assets/images/avatar.png'
+import avatar from '../assets/images/Avatar.png'
 import { NavigationBar } from './Navbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

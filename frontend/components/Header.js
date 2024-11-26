@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import avatar from '../assets/images/avatar.png';
+import avatar from '../assets/images/Avatar.png';
 import reward from '../assets/images/reward.png';
 import badge from '../assets/images/badge.png';
 import notification from '../assets/images/notification.png';
@@ -51,14 +51,18 @@ export const Header = () => {
                         <Text style={headerStyles.iconText}>2</Text>
                     </View>
                 </View>
-                <View style={headerStyles.notificationIcon}>
+                {/* Notification Icon: Added TouchableOpacity for navigation */}
+                <TouchableOpacity 
+                    style={headerStyles.notificationIcon}
+                    onPress={() => navigation.navigate('NotificationsScreen')} // Navigate to Notifications screen
+                >
                     <View style={headerStyles.notificationContainer}>
                         <Image
                             source={notification}
                             style={headerStyles.notificationIcon}
                         />
                     </View>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
