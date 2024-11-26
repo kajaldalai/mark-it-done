@@ -28,7 +28,8 @@ export const initDatabase = () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       description TEXT,
-      dueDate TEXT,
+      dueDate DATE,
+      submitted_date DATE,
       points INTEGER,
       rewardIcon TEXT,
       status TEXT DEFAULT 'kickoff' CHECK(status IN ('kickoff', 'inmotion', 'victorylap'))
@@ -66,22 +67,22 @@ export const insertInitialTasks = () => {
     -- Kickoff Tasks
     INSERT INTO tasks (title, description, dueDate, points, rewardIcon, status)
     VALUES 
-      ('CS495 Assignment 4', 'Set the wheels in motion. Greatness starts with first step.', 'Due on Nov 11, 10:00am', 400, 'bluereward', 'kickoff'),
-      ('CS585 Homework 3', 'A quick win awaits! Let''s cross something off that list!', 'Due on Nov 15, 11:59pm', 150, 'yellowreward', 'kickoff'),
-      ('CS450 Project Proposal', 'Today''s the day, let''s crush it!', 'Due on Nov 20, 11:59pm', 300, 'redreward', 'kickoff'),
-      ('CS581 Quiz 5', 'I know I am here for a while, but your attention would make my day!', 'Due on Nov 20, 11:59pm', 500, 'multireward', 'kickoff');
+      ('CS495 Assignment 4', 'Set the wheels in motion. Greatness starts with first step.', '2023-11-11', 400, 'bluereward', 'kickoff'),
+      ('CS585 Homework 3', 'A quick win awaits! Let''s cross something off that list!', '2023-11-15', 150, 'yellowreward', 'kickoff'),
+      ('CS450 Project Proposal', 'Today''s the day, let''s crush it!', '2023-11-20', 300, 'redreward', 'kickoff'),
+      ('CS581 Quiz 5', 'I know I am here for a while, but your attention would make my day!', '2023-11-20', 500, 'multireward', 'kickoff');
 
     -- In Motion Tasks
     INSERT INTO tasks (title, description, dueDate, points, rewardIcon, status)
     VALUES 
-      ('CS401 Project Phase 2', 'Making progress! Keep the momentum going.', 'Due on Nov 18, 11:59pm', 350, 'bluereward', 'inmotion'),
-      ('CS510 Research Paper', 'Almost halfway there. Stay focused!', 'Due on Nov 25, 11:59pm', 250, 'yellowreward', 'inmotion');
+      ('CS401 Project Phase 2', 'Making progress! Keep the momentum going.', '2023-11-18', 350, 'bluereward', 'inmotion'),
+      ('CS510 Research Paper', 'Almost halfway there. Stay focused!', '2023-11-25', 250, 'yellowreward', 'inmotion');
 
     -- Victory Lap Tasks
-    INSERT INTO tasks (title, description, dueDate, points, rewardIcon, status)
+    INSERT INTO tasks (title, description, dueDate, submitted_date, points, rewardIcon, status)
     VALUES 
-      ('CS460 Lab Report', 'Great job completing this task! 🎉', 'Submitted on Nov 5', 200, 'redreward', 'victorylap'),
-      ('CS590 Presentation', 'Successfully delivered and well received! 🥳', 'Submitted on Nov 8', 450, 'multireward', 'victorylap');
+      ('CS460 Lab Report', 'Great job completing this task! 🎉', '2023-11-10', '2023-11-05', 200, 'redreward', 'victorylap'),
+      ('CS590 Presentation', 'Successfully delivered and well received! 🥳', '2023-11-15', '2023-11-08', 450, 'multireward', 'victorylap');
   `);
 };
 
@@ -119,6 +120,14 @@ export const getTasks = async (status) => {
   return tasks;
 };
 
+export const getCompletedTasks = async (status) => {
+  const tasks = await db.getAllAsync(
+    'SELECT * FROM tasks WHERE status = ? ORDER BY submitted_date DESC',
+    [status]
+  );
+  return tasks;
+};
+
 export const updateTaskStatus = async (taskId, newStatus) => {
   const maxOrderResult = await db.getAllAsync(
     'SELECT MAX(id) as maxId FROM tasks WHERE status = ?',
@@ -126,19 +135,40 @@ export const updateTaskStatus = async (taskId, newStatus) => {
   );
   
   if (newStatus === 'victorylap') {
-    const currentDate = new Date();
-    const month = currentDate.toLocaleString('en-US', { month: 'short' });
-    const day = currentDate.getDate();
+    const currentDate = new Date().toISOString().split('T')[0];
     
-    await db.runAsync(
-      `UPDATE tasks 
-       SET status = ?,
-           id = (SELECT COALESCE(MAX(id), 0) + 1 FROM tasks),
-           description = description || ' 🎉',
-           dueDate = 'Submitted on ' || ? || ' ' || ?
-       WHERE id = ?`,
-      [newStatus, month, day, taskId]
-    );
+    // Get the task points before updating
+    const task = await db.getAllAsync('SELECT points FROM tasks WHERE id = ?', [taskId]);
+    const taskPoints = task[0]?.points || 0;
+    
+    // Begin transaction to ensure both updates succeed or fail together
+    await db.runAsync('BEGIN TRANSACTION');
+    
+    try {
+      // Update task status
+      await db.runAsync(
+        `UPDATE tasks 
+         SET status = ?,
+             id = (SELECT COALESCE(MAX(id), 0) + 1 FROM tasks),
+             description = description || ' 🎉',
+             submitted_date = ?
+         WHERE id = ?`,
+        [newStatus, currentDate, taskId]
+      );
+      
+      // Add points to user's reward_points (assuming single user for now)
+      await db.runAsync(
+        `UPDATE users 
+         SET reward_points = reward_points + ?
+         WHERE id = (SELECT MIN(id) FROM users)`,
+        [taskPoints]
+      );
+      
+      await db.runAsync('COMMIT');
+    } catch (error) {
+      await db.runAsync('ROLLBACK');
+      throw error;
+    }
   } else {
     await db.runAsync(
       `UPDATE tasks 

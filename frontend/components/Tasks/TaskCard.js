@@ -4,8 +4,42 @@ import clock from '../../assets/images/clock.png';
 import submitted from '../../assets/images/submitted.png';
 import { BlurView } from 'expo-blur';
 
-export const TaskCard = ({ title, description, dueDate, points, rewardIcon, status }) => {
+export const TaskCard = ({ title, description, dueDate, submitted_date, points, rewardIcon, status }) => {
   const timeIcon = status === 'victorylap' ? submitted : clock;
+
+  const formatDate = () => {
+    if (!dueDate) return '';
+
+    const date = new Date(dueDate);
+    
+    if (status === 'victorylap' && submitted_date) {
+      const submittedDate = new Date(submitted_date);
+      return `Submitted on ${submittedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+    }
+    
+    if (status === 'kickoff') {
+      return `Due on ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, 10:00am`;
+    }
+    
+    if (status === 'inmotion') {
+      const now = new Date();
+      const diffTime = date.getTime() - now.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
+      
+      if (diffDays > 1) {
+        return `Due in ${diffDays} days`;
+      } else if (diffDays === 1) {
+        return `Due in 1 day`;
+      } else if (diffHours > 0) {
+        return `Due in ${diffHours} hours`;
+      } else {
+        return 'Due now';
+      }
+    }
+    
+    return '';
+  };
 
   const renderPointsIcon = () => {
     if (status === 'victorylap') {
@@ -37,7 +71,7 @@ export const TaskCard = ({ title, description, dueDate, points, rewardIcon, stat
             source={timeIcon}
             style={taskCardStyles.icon}
           />
-          <Text style={taskCardStyles.dueDate}>{dueDate}</Text>
+          <Text style={taskCardStyles.dueDate}>{formatDate()}</Text>
         </View>
       </View>
       <View style={taskCardStyles.pointsContainer}>

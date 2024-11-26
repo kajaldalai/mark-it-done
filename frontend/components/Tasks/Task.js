@@ -1,11 +1,14 @@
 // App.js
 import React, { useState, useEffect } from "react";
-import {ScrollView, View, StyleSheet } from "react-native";
-import { initDatabase, insertInitialTasks, getTasks } from "../database";
+import { ScrollView, View, StyleSheet } from "react-native";
+import { initDatabase, insertInitialTasks, getTasks, getCompletedTasks } from "../database";
 import { TaskList } from "./TaskList";
 import { Header } from '../Header';
 import { NavigationBar } from '../Navbar';
 import { TabBar } from './TabBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserPoints } from '../database';
+
 
 const rewardImages = {
   bluereward: require('../../assets/images/bluereward.png'),
@@ -22,7 +25,7 @@ export const Task = () => {
   const [victoryLapTasks, setVictoryLapTasks] = useState([]);
   const [activeTab, setActiveTab] = useState('kickoff');
   const [pointsRefreshTrigger, setPointsRefreshTrigger] = useState(0);
-  // const [points, setPoints] = React.useState(0);
+  const [points, setPoints] = React.useState(0);
 
   useEffect(() => {
     loadTasks();
@@ -31,44 +34,56 @@ export const Task = () => {
   const loadTasks = async () => {
     const kickoff = await getTasks('kickoff');
     const inMotion = await getTasks('inmotion');
-    const victoryLap = await getTasks('victorylap');
-    
-    setKickoffTasks(kickoff);
-    setInMotionTasks(inMotion);
-    setVictoryLapTasks(victoryLap);
-  };
+    const victoryLap = await getCompletedTasks('victorylap');
 
+    // Format dates before setting state
+    const formatTasks = (tasks) => tasks.map(task => ({
+      ...task,
+      dueDate: task.dueDate,
+      submitted_date: task.submitted_date
+    }));
+
+    setKickoffTasks(formatTasks(kickoff));
+    setInMotionTasks(formatTasks(inMotion));
+    setVictoryLapTasks(formatTasks(victoryLap));
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    if (user) {
+      const points = await getUserPoints(user.id);
+      setPoints(points);
+    };
+  }
+  
   const handleRefresh = async () => {
     const userPoints = await getUserPoints(parsedUser.id);
     // setPoints(userPoints);
-    await loadTasks();
+    // await loadTasks();
     setPointsRefreshTrigger(userPoints);
   };
 
   return (
     <>
-      <Header refreshTrigger={pointsRefreshTrigger} />
-      <TabBar 
-        activeTab={activeTab} 
+      <Header refreshTrigger={points} />
+      <TabBar
+        activeTab={activeTab}
         onTabChange={setActiveTab}
       />
       <ScrollView style={styles.container}>
         <View style={styles.taskList}>
           {activeTab === 'kickoff' && (
-            <TaskList 
+            <TaskList
               tasks={kickoffTasks}
               rewardImages={rewardImages}
-              onRefresh={handleRefresh}
+              onRefresh={loadTasks}
               allowLeftSwipe={true}
               allowRightSwipe={false}
               nextStatus="inmotion"
             />
           )}
           {activeTab === 'inmotion' && (
-            <TaskList 
+            <TaskList
               tasks={inMotionTasks}
               rewardImages={rewardImages}
-              onRefresh={handleRefresh}
+              onRefresh={loadTasks}
               allowLeftSwipe={true}
               allowRightSwipe={true}
               nextStatus="victorylap"
@@ -76,10 +91,10 @@ export const Task = () => {
             />
           )}
           {activeTab === 'victorylap' && (
-            <TaskList 
+            <TaskList
               tasks={victoryLapTasks}
               rewardImages={rewardImages}
-              onRefresh={handleRefresh}
+              onRefresh={loadTasks}
               allowLeftSwipe={false}
               allowRightSwipe={false}
             />

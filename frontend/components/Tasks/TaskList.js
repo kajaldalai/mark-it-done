@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Animated, Image } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TaskCard } from './TaskCard';
@@ -14,6 +14,8 @@ export const TaskList = ({
   nextStatus,
   previousStatus 
 }) => {
+  const [userPoints, setUserPoints] = useState(0);
+
   const getTaskIcon = (task) => {
     if (task.status === 'inmotion') {
       // Parse the due date from the string (assuming format "Due on Nov 11, 10:00am")
@@ -110,6 +112,7 @@ export const TaskList = ({
               points={task.points}
               rewardIcon={rewardImages[getTaskIcon(task)]}
               status={task.status}
+              submitted_date={task.submitted_date}
             />
           </Swipeable>
         ))
