@@ -1,10 +1,11 @@
 // App.js
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, FlatList, Alert } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Header } from './Header'
 import { NavigationBar } from './Navbar'
 import { RewardCard } from './RewardCard'
-import { getRewards } from './database'
+import { getRewards, getUserPoints, redeemReward } from './database'
 import { LogBox } from 'react-native';
 
 // Ignore the specific text string warning
@@ -14,11 +15,35 @@ export const Rewards = () => {
     const [activeTab, setActiveTab] = useState('available');
     const [rewards, setRewards] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [userPoints, setUserPoints] = useState(0);
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+        const loadUserData = async () => {
+            try {
+                const user = JSON.parse(await AsyncStorage.getItem('user'));
+                if (user) {
+                    setUserId(user.id);
+                    const points = await getUserPoints(user.id);
+                    setUserPoints(points);
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        };
+        loadUserData();
+    }, []);
+
+    useEffect(() => {
+        if (userId) {
+            fetchRewards(activeTab);
+        }
+    }, [activeTab, userId]);
 
     const fetchRewards = async (type) => {
         setLoading(true);
         try {
-            const response = await getRewards(type, 1);
+            const response = await getRewards(type, userId);
             setRewards(response);
         } catch (error) {
             console.error('Error fetching rewards:', error);
@@ -27,9 +52,19 @@ export const Rewards = () => {
         }
     };
 
-    useEffect(() => {
-        fetchRewards(activeTab);
-    }, [activeTab]);
+    const handleRedeem = async (rewardId) => {
+        try {
+            await redeemReward(userId, rewardId);
+            // Refresh rewards and user points
+            fetchRewards(activeTab);
+            const points = await getUserPoints(userId);
+            setUserPoints(points);
+            Alert.alert('Success', 'Reward redeemed successfully!');
+        } catch (error) {
+            console.error('Redemption error:', error);
+            Alert.alert('Error', 'Failed to redeem reward');
+        }
+    };
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -64,7 +99,13 @@ export const Rewards = () => {
                         data={rewards}
                         numColumns={2}
                         contentContainerStyle={styles.rewardsList}
-                        renderItem={({ item }) => <RewardCard reward={item} />}
+                        renderItem={({ item }) => (
+                            <RewardCard 
+                                reward={item} 
+                                onRedeem={handleRedeem}
+                                userPoints={userPoints}
+                            />
+                        )}
                         keyExtractor={item => item.id.toString()}
                         refreshing={loading}
                         onRefresh={() => fetchRewards(activeTab)}

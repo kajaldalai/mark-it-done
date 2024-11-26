@@ -4,6 +4,15 @@ const db = SQLite.openDatabaseSync('tasks.db');
 
 // Initialize database tables
 export const initDatabase = () => {
+  // First drop all tables to ensure clean slate
+  db.execSync(`
+    DROP TABLE IF EXISTS user_rewards;
+    DROP TABLE IF EXISTS rewards;
+    DROP TABLE IF EXISTS tasks;
+    DROP TABLE IF EXISTS users;
+  `);
+
+  // Then create tables with new schema
   db.execSync(`
     PRAGMA foreign_keys = ON;
     
@@ -11,7 +20,8 @@ export const initDatabase = () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
-      name TEXT NOT NULL
+      name TEXT NOT NULL,
+      reward_points INTEGER DEFAULT 4500
     );
 
     CREATE TABLE IF NOT EXISTS tasks (
@@ -78,9 +88,9 @@ export const insertInitialTasks = () => {
 export const insertInitialUsers = () => {
   db.execSync(`
     DELETE FROM users;
-    INSERT INTO users (email, password, name) VALUES 
-    ('kdalai@hawk.iit.edu', 'pwd123', 'Kajal Dalai'),
-    ('john.tim@iit.edu', 'pwd456', 'John Tim');
+    INSERT INTO users (email, password, name, reward_points) VALUES 
+    ('kdalai@hawk.iit.edu', 'pwd123', 'Kajal Dalai', 4500),
+    ('john.tim@iit.edu', 'pwd456', 'John Tim', 4500);
   `);
 };
 
@@ -150,32 +160,91 @@ export const authenticateUser = async (email, password) => {
 };
 
 export const getRewards = async (type, userId) => {
-  if (type === 'available') {
-    return await db.getAllAsync(`
-      SELECT r.* 
-      FROM rewards r
-      LEFT JOIN user_rewards ur 
-        ON r.id = ur.reward_id AND ur.user_id = ?
-      WHERE ur.id IS NULL
-      ORDER BY r.points ASC
-    `, [userId]);
-  } else {
-    return await db.getAllAsync(`
-      SELECT r.*, ur.redeemed_at, ur.expiry_date 
-      FROM rewards r
-      JOIN user_rewards ur ON r.id = ur.reward_id
-      WHERE ur.user_id = ?
-      ORDER BY ur.redeemed_at DESC
-    `, [userId]);
-  }
+    if (!userId) {
+        console.error('No user ID provided to getRewards');
+        return [];
+    }
+
+    try {
+        if (type === 'available') {
+            return await db.getAllAsync(`
+                SELECT r.* 
+                FROM rewards r
+                LEFT JOIN user_rewards ur 
+                    ON r.id = ur.reward_id AND ur.user_id = ?
+                WHERE ur.id IS NULL
+                ORDER BY r.points ASC
+            `, [userId]);
+        } else {
+            return await db.getAllAsync(`
+                SELECT r.*, ur.redeemed_at, ur.expiry_date 
+                FROM rewards r
+                JOIN user_rewards ur ON r.id = ur.reward_id
+                WHERE ur.user_id = ?
+                ORDER BY ur.redeemed_at DESC
+            `, [userId]);
+        }
+    } catch (error) {
+        console.error('Database error in getRewards:', error);
+        throw error;
+    }
+};
+
+export const getUserPoints = async (userId) => {
+    const result = await db.getAllAsync(
+        'SELECT reward_points FROM users WHERE id = ?',
+        [userId]
+    );
+    return result[0]?.reward_points || 0;
 };
 
 export const redeemReward = async (userId, rewardId) => {
-  const expiryDate = new Date();
-  expiryDate.setMonth(expiryDate.getMonth() + 3); // Set expiry to 3 months from now
+    if (!userId || !rewardId) {
+        throw new Error('Missing userId or rewardId');
+    }
 
-  await db.runAsync(`
-    INSERT INTO user_rewards (user_id, reward_id, expiry_date)
-    VALUES (?, ?, ?)
-  `, [userId, rewardId, expiryDate.toISOString()]);
+    try {
+        // Start a transaction
+        await db.runAsync('BEGIN TRANSACTION');
+
+        // Get reward points
+        const reward = await db.getAllAsync(
+            'SELECT points FROM rewards WHERE id = ?',
+            [rewardId]
+        );
+        
+        if (!reward[0]) {
+            await db.runAsync('ROLLBACK');
+            throw new Error('Reward not found');
+        }
+        
+        const points = reward[0].points;
+        
+        // Update user points
+        const result = await db.runAsync(
+            'UPDATE users SET reward_points = reward_points - ? WHERE id = ? AND reward_points >= ?',
+            [points, userId, points]
+        );
+
+        if (result.rowsAffected === 0) {
+            await db.runAsync('ROLLBACK');
+            throw new Error('Insufficient points');
+        }
+        
+        // Add redemption record
+        const expiryDate = new Date();
+        expiryDate.setMonth(expiryDate.getMonth() + 3);
+        
+        await db.runAsync(`
+            INSERT INTO user_rewards (user_id, reward_id, expiry_date)
+            VALUES (?, ?, ?)
+        `, [userId, rewardId, expiryDate.toISOString()]);
+
+        // Commit the transaction
+        await db.runAsync('COMMIT');
+    } catch (error) {
+        await db.runAsync('ROLLBACK');
+        console.error('Database error in redeemReward:', error);
+        throw error;
+    }
 };

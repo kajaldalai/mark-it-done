@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import rewardIcon from '../assets/images/reward.png'
 import lock from '../assets/images/lock.png'
 
@@ -13,9 +13,28 @@ const rewardImages = {
   hotdog: require('../assets/images/hotdog.png'),
 };
 
-export const RewardCard = ({ reward }) => {
+export const RewardCard = ({ reward, onRedeem, userPoints }) => {
+    const canRedeem = !reward.is_locked && (!reward.redeemed_at) && userPoints >= reward.points;
+
+    const handleRedeem = () => {
+        if (canRedeem) {
+            Alert.alert(
+                "Redeem Reward",
+                `Are you sure you want to redeem ${reward.name} for ${reward.points} points?`,
+                [
+                    { text: "Cancel", style: "cancel" },
+                    { text: "Redeem", onPress: () => onRedeem(reward.id) }
+                ]
+            );
+        }
+    };
+
     return (
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity 
+            style={[styles.card, !canRedeem && styles.disabledCard]}
+            onPress={handleRedeem}
+            disabled={!canRedeem || reward.redeemed_at}
+        >
             <View style={styles.cardContent}>
                 <Image 
                     source={rewardImages[reward.image_url]}
@@ -43,6 +62,18 @@ export const RewardCard = ({ reward }) => {
                             style={styles.lockIcon}
                         />
                     </View>
+                )}
+                {reward.redeemed_at ? (
+                    <View style={styles.redeemedBadge}>
+                        <Text style={styles.redeemedText}>Redeemed</Text>
+                    </View>
+                ) : canRedeem && (
+                    <TouchableOpacity 
+                        style={styles.redeemButton}
+                        onPress={handleRedeem}
+                    >
+                        <Text style={styles.redeemButtonText}>Redeem</Text>
+                    </TouchableOpacity>
                 )}
             </View>
         </TouchableOpacity>
@@ -103,5 +134,32 @@ const styles = StyleSheet.create({
     textContainer: {
         width: '100%',
         alignItems: 'center',
+    },
+    disabledCard: {
+        opacity: 0.7,
+    },
+    redeemButton: {
+        backgroundColor: '#7a4de8',
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderRadius: 8,
+        marginTop: 8,
+    },
+    redeemButtonText: {
+        color: '#FFF',
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    redeemedBadge: {
+        backgroundColor: '#4CAF50',
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        borderRadius: 12,
+        marginTop: 8,
+    },
+    redeemedText: {
+        color: '#FFF',
+        fontSize: 12,
+        fontWeight: '500',
     },
 }); 
