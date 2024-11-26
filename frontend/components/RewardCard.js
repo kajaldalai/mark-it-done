@@ -36,12 +36,12 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
                 disabled={!canRedeem || reward.redeemed_at}
             >
                 <View style={styles.cardContent}>
+                    {/* <Text style={styles.name}>{reward.name}</Text> */}
                     <Image 
                         source={rewardImages[reward.image_url]}
                         style={styles.image}
                     />
                     <View style={styles.textContainer}>
-                        <Text style={styles.name}>{reward.name}</Text>
                         <View style={styles.pointsContainer}>
                             <Image 
                                 source={rewardIcon}
@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 4,
+        marginTop: 8
     },
     diamond: {
         width: 20,
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
     points: {
         fontSize: 14,
         color: '#666',
+        fontWeight: 'bold'
     },
     expiry: {
         fontSize: 12,
