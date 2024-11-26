@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#7a4de8',
         paddingHorizontal: 16,
         paddingVertical: 8,
-        borderRadius: 8,
-        marginTop: 8,
+        borderRadius: 15,
+        marginTop: 10,
     },
     redeemButtonText: {
         color: '#FFF',
