@@ -90,7 +90,6 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
                             source={rewardImages[reward.image_url]}
                             style={styles.modalImage}
                         />
-                        <Text style={styles.modalTitle}>Redeem Reward</Text>
                         <Text style={styles.modalText}>
                             Are you sure you want to redeem
                         </Text>
@@ -113,7 +112,7 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
                                 style={[styles.modalButton, styles.confirmButton]}
                                 onPress={confirmRedeem}
                             >
-                                <Text style={styles.confirmButtonText}>Heck Yeah!</Text>
+                                <Text style={styles.confirmButtonText}>Heck Yeah! </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -216,19 +215,13 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 24,
         alignItems: 'center',
-        width: '80%',
+        width: '85%',
         elevation: 5,
     },
     modalImage: {
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 75,
         marginBottom: 16,
-    },
-    modalTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 12,
     },
     modalText: {
         fontSize: 16,
@@ -258,7 +251,6 @@ const styles = StyleSheet.create({
     pointsText: {
         fontSize: 15,
         fontWeight: '600',
-        // color: '#7a4de8',
     },
     modalButtons: {
         flexDirection: 'row',
@@ -266,7 +258,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     modalButton: {
-        paddingVertical: 12,
+        paddingVertical: 10,
         paddingHorizontal: 24,
         borderRadius: 16,
         minWidth: 120,

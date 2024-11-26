@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationBar } from './Navbar';
-import avatar from '../assets/images/Avatar.png';
+import avatar from '../assets/images/avatar.png';
 import reward from '../assets/images/reward.png';
 import badge from '../assets/images/badge.png';
 import linkedin from '../assets/images/linkedin.png';
