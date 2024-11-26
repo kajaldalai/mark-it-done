@@ -8,14 +8,15 @@ const rewardImages = {
   pizza: require('../assets/images/pizza.png'),
   coffee: require('../assets/images/coffee.png'),
   donut: require('../assets/images/donut.png'),
-  chips: require('../assets/images/chips.png'),
+  chocomuffin: require('../assets/images/chocomuffin.png'),
   cupcake: require('../assets/images/cupcake.png'),
   hotdog: require('../assets/images/hotdog.png'),
 };
 
 export const RewardCard = ({ reward, onRedeem, userPoints }) => {
     const [showModal, setShowModal] = useState(false);
-    const canRedeem = !reward.is_locked && (!reward.redeemed_at) && userPoints >= reward.points;
+    const canRedeem = !reward.redeemed_at && userPoints >= reward.points;
+    const isLocked = userPoints < reward.points;
 
     const handleRedeem = () => {
         if (canRedeem) {
@@ -36,7 +37,6 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
                 disabled={!canRedeem || reward.redeemed_at}
             >
                 <View style={styles.cardContent}>
-                    {/* <Text style={styles.name}>{reward.name}</Text> */}
                     <Image 
                         source={rewardImages[reward.image_url]}
                         style={styles.image}
@@ -55,7 +55,7 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
                             </Text>
                         )}
                     </View>
-                    {reward.is_locked && (
+                    {isLocked && (
                         <View style={styles.lockedOverlay}>
                             <Image 
                                 source={lock}

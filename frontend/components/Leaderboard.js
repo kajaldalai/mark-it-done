@@ -26,13 +26,13 @@ export const Leaderboard = () => {
   }, []);
 
   const users = [
-    { rank: 4, name: 'Anvit Patel', score: '7,900', icon: avatar },
-    { rank: 5, name: userName, score: '7,700', highlight: true, icon: user5 },
-    { rank: 6, name: 'Maggie D', score: '7,500', icon: user6 },
-    { rank: 7, name: 'Greg Goerge', score: '7,200', icon: user7 },
-    { rank: 8, name: 'Ishaan P', score: '6,800', icon: user8 },
-    { rank: 9, name: 'Tian Lee', score: '6,600', icon: user9 },
-    { rank: 10, name: 'Ellie M', score: '6,300', icon: user4 },
+    { rank: 4, name: 'Anvit Patel', score: '7,900', icon: user4 },
+    { rank: 5, name: userName, score: '7,700', highlight: true, icon: avatar },
+    { rank: 6, name: 'Maggie D', score: '7,500', icon: user5 },
+    { rank: 7, name: 'Greg Goerge', score: '7,200', icon: user6 },
+    { rank: 8, name: 'Ishaan P', score: '6,800', icon: user7 },
+    { rank: 9, name: 'Tian Lee', score: '6,600', icon: user8 },
+    { rank: 10, name: 'Ellie M', score: '6,300', icon: user9 },
   ];
 
   return (

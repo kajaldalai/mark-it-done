@@ -39,8 +39,7 @@ export const initDatabase = () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       points INTEGER NOT NULL,
-      image_url TEXT NOT NULL,
-      is_locked BOOLEAN DEFAULT 0
+      image_url TEXT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS user_rewards (
@@ -101,14 +100,14 @@ export const insertInitialRewards = () => {
     DELETE FROM rewards 
     WHERE id NOT IN (SELECT DISTINCT reward_id FROM user_rewards);
     
-    -- Insert rewards only if they don't exist
-    INSERT OR IGNORE INTO rewards (name, points, image_url, is_locked) VALUES 
-      ('Pizza Slice', 2500, 'pizza', 0),
-      ('Coffee', 1500, 'coffee', 0),
-      ('Donut', 2200, 'donut', 0),
-      ('Potato Chips', 3000, 'chips', 0),
-      ('Cupcake', 4400, 'cupcake', 1),
-      ('Hot Dog', 5000, 'hotdog', 1);
+    -- Insert rewards only if they don't exist (removed is_locked field)
+    INSERT OR IGNORE INTO rewards (name, points, image_url) VALUES 
+      ('Pizza Slice', 2500, 'pizza'),
+      ('Coffee', 1500, 'coffee'),
+      ('Donut', 2200, 'donut'),
+      ('Muffin', 3000, 'chocomuffin'),
+      ('Cupcake', 4400, 'cupcake'),
+      ('Hot Dog', 5000, 'hotdog');
   `);
 };
 
