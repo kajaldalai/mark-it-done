@@ -6,10 +6,12 @@ import badge from '../assets/images/badge.png';
 import notification from '../assets/images/notification.png';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserPoints } from './database';
 
-export const Header = () => {
+export const Header = ({ refreshTrigger }) => {
     const navigation = useNavigation();
     const [userName, setUserName] = React.useState('');
+    const [points, setPoints] = React.useState(0);
 
     React.useEffect(() => {
         const getUserName = async () => {
@@ -17,10 +19,12 @@ export const Header = () => {
             if (user) {
                 const parsedUser = JSON.parse(user);
                 setUserName(parsedUser.name || '');
+                const userPoints = await getUserPoints(parsedUser.id);
+                setPoints(userPoints);        
             }
         };
         getUserName();
-    }, []);
+    }, [refreshTrigger]);
 
     return (
         <View style={headerStyles.container}>
@@ -40,7 +44,7 @@ export const Header = () => {
                         <Image
                             source={reward}
                         />
-                        <Text style={headerStyles.iconText}>4500</Text>
+                        <Text style={headerStyles.iconText}>{points}</Text>
                     </View>
                 </View>
                 <View style={headerStyles.badgeIcon}>

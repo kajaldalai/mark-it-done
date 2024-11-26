@@ -71,7 +71,7 @@ export const Rewards = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.container}>
-                <Header />
+                <Header refreshTrigger={userPoints}/>
                 
                 <View style={styles.content}>
                     <View style={styles.tabContainer}>

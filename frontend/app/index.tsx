@@ -8,7 +8,7 @@ import { Leaderboard } from '../components/Leaderboard'
 import { Rewards } from '../components/Rewards'
 import { ProfileScreen } from '../components/Profile'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { initDatabase } from '@/components/database';
+import { initDatabase, insertInitialTasks } from '@/components/database';
 import { ReferralScreen } from '../components/ReferralScreen';
 import { SettingsScreen } from '../components/Settings';
 import { NotificationsScreen } from '../components/NotificationsScreen';
@@ -18,6 +18,7 @@ const Stack = createStackNavigator();
 export default function App() {
   useEffect(() => {
     initDatabase();
+    insertInitialTasks();
   }, []);
 
   return (

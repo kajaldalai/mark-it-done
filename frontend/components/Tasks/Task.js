@@ -21,11 +21,10 @@ export const Task = () => {
   const [inMotionTasks, setInMotionTasks] = useState([]);
   const [victoryLapTasks, setVictoryLapTasks] = useState([]);
   const [activeTab, setActiveTab] = useState('kickoff');
+  const [pointsRefreshTrigger, setPointsRefreshTrigger] = useState(0);
+  // const [points, setPoints] = React.useState(0);
 
   useEffect(() => {
-    // Initialize database and load initial data
-    initDatabase();
-    insertInitialTasks();
     loadTasks();
   }, []);
 
@@ -39,9 +38,16 @@ export const Task = () => {
     setVictoryLapTasks(victoryLap);
   };
 
+  const handleRefresh = async () => {
+    const userPoints = await getUserPoints(parsedUser.id);
+    // setPoints(userPoints);
+    await loadTasks();
+    setPointsRefreshTrigger(userPoints);
+  };
+
   return (
     <>
-      <Header />
+      <Header refreshTrigger={pointsRefreshTrigger} />
       <TabBar 
         activeTab={activeTab} 
         onTabChange={setActiveTab}
@@ -52,7 +58,7 @@ export const Task = () => {
             <TaskList 
               tasks={kickoffTasks}
               rewardImages={rewardImages}
-              onRefresh={loadTasks}
+              onRefresh={handleRefresh}
               allowLeftSwipe={true}
               allowRightSwipe={false}
               nextStatus="inmotion"
@@ -62,7 +68,7 @@ export const Task = () => {
             <TaskList 
               tasks={inMotionTasks}
               rewardImages={rewardImages}
-              onRefresh={loadTasks}
+              onRefresh={handleRefresh}
               allowLeftSwipe={true}
               allowRightSwipe={true}
               nextStatus="victorylap"
@@ -73,7 +79,7 @@ export const Task = () => {
             <TaskList 
               tasks={victoryLapTasks}
               rewardImages={rewardImages}
-              onRefresh={loadTasks}
+              onRefresh={handleRefresh}
               allowLeftSwipe={false}
               allowRightSwipe={false}
             />
