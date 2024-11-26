@@ -5,12 +5,12 @@ import lock from '../assets/images/lock.png'
 
 // Import all reward images
 const rewardImages = {
-  pizza: require('../assets/images/pizza.png'),
-  coffee: require('../assets/images/coffee.png'),
-  donut: require('../assets/images/donut.png'),
-  chocomuffin: require('../assets/images/chocomuffin.png'),
-  cupcake: require('../assets/images/cupcake.png'),
-  hotdog: require('../assets/images/hotdog.png'),
+    pizza: require('../assets/images/pizza.png'),
+    coffee: require('../assets/images/coffee.png'),
+    donut: require('../assets/images/donut.png'),
+    chocomuffin: require('../assets/images/chocomuffin.png'),
+    cupcake: require('../assets/images/cupcake.png'),
+    hotdog: require('../assets/images/hotdog.png'),
 };
 
 export const RewardCard = ({ reward, onRedeem, userPoints }) => {
@@ -31,34 +31,39 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
 
     return (
         <>
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={[styles.card, !canRedeem && !isLocked && styles.disabledCard]}
                 onPress={handleRedeem}
                 disabled={!canRedeem || reward.redeemed_at}
             >
                 <View style={styles.cardContent}>
-                <Text style={styles.name}>{reward.name}</Text>
-                    <Image 
+                    <Text style={styles.name}>{reward.name}</Text>
+                    <Image
                         source={rewardImages[reward.image_url]}
                         style={styles.image}
                     />
                     <View style={styles.textContainer}>
                         <View style={styles.pointsContainer}>
-                            <Image 
+                            <Image
                                 source={rewardIcon}
                                 style={styles.diamond}
                             />
                             <Text style={styles.points}>{reward.points}</Text>
                         </View>
-                        {reward.expiry_date && (
+                        {reward.redeemed_at && (
                             <Text style={styles.expiry}>
-                                {new Date(reward.expiry_date).toLocaleDateString()}
+                                {new Date(reward.redeemed_at).toLocaleDateString()}
+                            </Text>
+                        )}
+                        {!reward.redeemed_at && reward.expiry_date && (
+                            <Text style={styles.expiry}>
+                                Expires {new Date(reward.expiry_date).toLocaleDateString()}
                             </Text>
                         )}
                     </View>
                     {isLocked && (
                         <View style={styles.lockedOverlay}>
-                            <Image 
+                            <Image
                                 source={lock}
                                 style={styles.lockIcon}
                             />
@@ -69,7 +74,7 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
                             <Text style={styles.redeemedText}>Redeemed</Text>
                         </View>
                     ) : canRedeem && (
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             style={styles.redeemButton}
                             onPress={handleRedeem}
                         >
@@ -78,7 +83,7 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
                     )}
                 </View>
             </TouchableOpacity>
-            
+
             <Modal
                 transparent={true}
                 visible={showModal}
@@ -87,7 +92,7 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
-                        <Image 
+                        <Image
                             source={rewardImages[reward.image_url]}
                             style={styles.modalImage}
                         />
@@ -96,20 +101,20 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
                         </Text>
                         <Text style={styles.rewardName}>{reward.name}</Text>
                         <View style={styles.modalPoints}>
-                            <Image 
+                            <Image
                                 source={rewardIcon}
                                 style={styles.modalDiamond}
                             />
                             <Text style={styles.pointsText}>{reward.points}</Text>
                         </View>
                         <View style={styles.modalButtons}>
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 style={[styles.modalButton, styles.cancelButton]}
                                 onPress={() => setShowModal(false)}
                             >
                                 <Text style={styles.cancelButtonText}>Maybe Later</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 style={[styles.modalButton, styles.confirmButton]}
                                 onPress={confirmRedeem}
                             >
@@ -137,7 +142,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.2,
         shadowRadius: 1.41,
-        elevation: 2,    
+        elevation: 2,
     },
     image: {
         width: 55,
