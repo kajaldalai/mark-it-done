@@ -55,11 +55,9 @@ export const Rewards = () => {
     const handleRedeem = async (rewardId) => {
         try {
             await redeemReward(userId, rewardId);
-            // Refresh rewards and user points
-            fetchRewards(activeTab);
             const points = await getUserPoints(userId);
             setUserPoints(points);
-            Alert.alert('Success', 'Reward redeemed successfully!');
+            setActiveTab('redeemed');
         } catch (error) {
             console.error('Redemption error:', error);
             Alert.alert('Error', 'Failed to redeem reward');
