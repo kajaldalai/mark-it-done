@@ -30,7 +30,7 @@ export const TaskCard = ({ title, description, dueDate, submitted_date, points, 
     const date = new Date(dueDate);
     
     if (status === 'victorylap' && submitted_date) {
-      const submittedDate = new Date(submitted_date);
+      const submittedDate = new Date(submitted_date + 'T00:00:00');
       return `Submitted on ${submittedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
     }
     

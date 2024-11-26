@@ -3,7 +3,6 @@ import { View, Text, Animated, Image } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TaskCard } from './TaskCard';
 import { updateTaskStatus } from '../database';
-import { isWithinDays } from '../utils/date';
 
 export const TaskList = ({ 
   tasks, 
