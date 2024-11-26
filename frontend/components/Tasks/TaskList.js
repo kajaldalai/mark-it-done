@@ -112,7 +112,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     width: 100,
-    height: '100%',
+    marginBottom: 20,
   },
   rightAction: {
     backgroundColor: '#2196F3',
