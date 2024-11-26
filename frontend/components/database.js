@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const db = SQLite.openDatabaseSync('tasks.db');
 
@@ -90,7 +91,7 @@ export const insertInitialUsers = () => {
     DELETE FROM users;
     INSERT INTO users (email, password, name, reward_points) VALUES 
     ('kdalai@hawk.iit.edu', 'pwd123', 'Kajal Dalai', 4500),
-    ('john.tim@iit.edu', 'pwd456', 'John Tim', 4500);
+    ('tjohn@hawk.iit.edu', 'pwd456', 'John Tim', 4500);
   `);
 };
 
@@ -132,17 +133,17 @@ export const updateTaskStatus = async (taskId, newStatus) => {
     'SELECT MAX(id) as maxId FROM tasks WHERE status = ?',
     [newStatus]
   );
-  
+
   if (newStatus === 'victorylap') {
     const currentDate = new Date().toISOString().split('T')[0];
-    
+
     // Get the task points before updating
     const task = await db.getAllAsync('SELECT points FROM tasks WHERE id = ?', [taskId]);
     const taskPoints = task[0]?.points || 0;
-    
+
     // Begin transaction to ensure both updates succeed or fail together
     await db.runAsync('BEGIN TRANSACTION');
-    
+
     try {
       // Update task status
       await db.runAsync(
@@ -154,15 +155,20 @@ export const updateTaskStatus = async (taskId, newStatus) => {
          WHERE id = ?`,
         [newStatus, currentDate, taskId]
       );
-      
-      // Add points to user's reward_points (assuming single user for now)
+
+      // Get the current user from AsyncStorage and update their points
+      const user = JSON.parse(await AsyncStorage.getItem('user'));
+      if (!user?.id) {
+        throw new Error('No user found');
+      }
+
       await db.runAsync(
         `UPDATE users 
          SET reward_points = reward_points + ?
-         WHERE id = (SELECT MIN(id) FROM users)`,
-        [taskPoints]
+         WHERE id = ?`,
+        [taskPoints, user.id]
       );
-      
+
       await db.runAsync('COMMIT');
     } catch (error) {
       await db.runAsync('ROLLBACK');
@@ -180,6 +186,7 @@ export const updateTaskStatus = async (taskId, newStatus) => {
 };
 
 export const authenticateUser = async (email, password) => {
+  email = email.toLowerCase();
   if (!email.endsWith('.edu')) {
     throw new Error('Only .edu email addresses are allowed');
   }
@@ -188,19 +195,19 @@ export const authenticateUser = async (email, password) => {
     'SELECT * FROM users WHERE email = ? AND password = ?',
     [email, password]
   );
-  
+
   return users[0] || null;
 };
 
 export const getRewards = async (type, userId) => {
-    if (!userId) {
-        console.error('No user ID provided to getRewards');
-        return [];
-    }
+  if (!userId) {
+    console.error('No user ID provided to getRewards');
+    return [];
+  }
 
-    try {
-        if (type === 'available') {
-            return await db.getAllAsync(`
+  try {
+    if (type === 'available') {
+      return await db.getAllAsync(`
                 SELECT r.* 
                 FROM rewards r
                 LEFT JOIN user_rewards ur 
@@ -208,75 +215,75 @@ export const getRewards = async (type, userId) => {
                 WHERE ur.id IS NULL
                 ORDER BY r.points ASC
             `, [userId]);
-        } else {
-            return await db.getAllAsync(`
+    } else {
+      return await db.getAllAsync(`
                 SELECT r.*, ur.redeemed_at, ur.expiry_date 
                 FROM rewards r
                 JOIN user_rewards ur ON r.id = ur.reward_id
                 WHERE ur.user_id = ?
                 ORDER BY ur.redeemed_at DESC
             `, [userId]);
-        }
-    } catch (error) {
-        console.error('Database error in getRewards:', error);
-        throw error;
     }
+  } catch (error) {
+    console.error('Database error in getRewards:', error);
+    throw error;
+  }
 };
 
 export const getUserPoints = async (userId) => {
-    const result = await db.getAllAsync(
-        'SELECT reward_points FROM users WHERE id = ?',
-        [userId]
-    );
-    return result[0]?.reward_points || 0;
+  const result = await db.getAllAsync(
+    'SELECT reward_points FROM users WHERE id = ?',
+    [userId]
+  );
+  return result[0]?.reward_points || 0;
 };
 
 export const redeemReward = async (userId, rewardId) => {
-    if (!userId || !rewardId) {
-        throw new Error('Missing userId or rewardId');
+  if (!userId || !rewardId) {
+    throw new Error('Missing userId or rewardId');
+  }
+
+  try {
+    await db.runAsync('BEGIN TRANSACTION');
+
+    // Get reward points
+    const reward = await db.getAllAsync(
+      'SELECT points FROM rewards WHERE id = ?',
+      [rewardId]
+    );
+
+    if (!reward[0]) {
+      await db.runAsync('ROLLBACK');
+      throw new Error('Reward not found');
     }
 
-    try {
-        await db.runAsync('BEGIN TRANSACTION');
+    const points = reward[0].points;
 
-        // Get reward points
-        const reward = await db.getAllAsync(
-            'SELECT points FROM rewards WHERE id = ?',
-            [rewardId]
-        );
-        
-        if (!reward[0]) {
-            await db.runAsync('ROLLBACK');
-            throw new Error('Reward not found');
-        }
-        
-        const points = reward[0].points;
-        
-        // Update user points by subtracting the reward cost
-        const result = await db.runAsync(
-            'UPDATE users SET reward_points = reward_points - ? WHERE id = ? AND reward_points >= ?',
-            [points, userId, points]
-        );
+    // Update user points by subtracting the reward cost
+    const result = await db.runAsync(
+      'UPDATE users SET reward_points = reward_points - ? WHERE id = ? AND reward_points >= ?',
+      [points, userId, points]
+    );
 
-        if (result.rowsAffected === 0) {
-            await db.runAsync('ROLLBACK');
-            throw new Error('Insufficient points');
-        }
-        
-        // Add redemption record
-        const expiryDate = new Date();
-        expiryDate.setMonth(expiryDate.getMonth() + 3);
-        
-        await db.runAsync(`
+    if (result.rowsAffected === 0) {
+      await db.runAsync('ROLLBACK');
+      throw new Error('Insufficient points');
+    }
+
+    // Add redemption record
+    const expiryDate = new Date();
+    expiryDate.setMonth(expiryDate.getMonth() + 3);
+
+    await db.runAsync(`
             INSERT INTO user_rewards (user_id, reward_id, expiry_date)
             VALUES (?, ?, ?)
         `, [userId, rewardId, expiryDate.toISOString()]);
 
-        // Commit the transaction
-        await db.runAsync('COMMIT');
-    } catch (error) {
-        await db.runAsync('ROLLBACK');
-        console.error('Database error in redeemReward:', error);
-        throw error;
-    }
+    // Commit the transaction
+    await db.runAsync('COMMIT');
+  } catch (error) {
+    await db.runAsync('ROLLBACK');
+    console.error('Database error in redeemReward:', error);
+    throw error;
+  }
 };

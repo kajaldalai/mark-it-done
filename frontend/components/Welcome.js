@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   image: {
-    width: 392,
+    width: 360,
     height: 378,
     marginBottom: 40,
   },
@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#744be5',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 25,
     borderRadius: 10,
-    marginBottom: 20
+    marginBottom: 25,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
     marginRight: 10,
   },

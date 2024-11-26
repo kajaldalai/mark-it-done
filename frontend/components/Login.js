@@ -59,9 +59,6 @@ export default function LoginScreen({ navigation }) {
                     <Text style={styles.signInButtonText}>Sign in</Text>
                 </TouchableOpacity>
             </View>
-            {/* <View style={styles.rememberMe}>
-        <Text style={styles.rememberMeText}>Remember me</Text>
-      </View> */}
             <View style={styles.dividerContainer}>
                 <View style={styles.divider} />
                 <Text style={styles.orText}>or</Text>
@@ -90,7 +87,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
-        fontSize: 32,
+        fontSize: 30,
         fontWeight: '700',
         color: '#744be5',
         textAlign: 'center',
@@ -134,7 +131,7 @@ const styles = StyleSheet.create({
     },
     signInButtonText: {
         color: '#fff',
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: '700',
     },
     rememberMe: {

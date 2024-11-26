@@ -240,24 +240,23 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     rewardName: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: '600',
-        color: '#7a4de8',
         marginVertical: 8,
     },
     modalPoints: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-        marginVertical: 16,
+        marginVertical: 14,
         backgroundColor: '#f0ebff',
         paddingHorizontal: 16,
         paddingVertical: 8,
         borderRadius: 12,
     },
     modalDiamond: {
-        width: 28,
-        height: 20,
+        width: 26,
+        height: 18,
     },
     pointsText: {
         fontSize: 15,
@@ -265,12 +264,12 @@ const styles = StyleSheet.create({
     },
     modalButtons: {
         flexDirection: 'row',
-        gap: 10,
+        gap: 16,
         marginTop: 16,
     },
     modalButton: {
         paddingVertical: 10,
-        paddingHorizontal: 24,
+        paddingHorizontal: 20,
         borderRadius: 16,
         minWidth: 120,
     },
