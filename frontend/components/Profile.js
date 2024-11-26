@@ -64,16 +64,16 @@ export const ProfileScreen = () => {
 
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <Image source={podium} style={styles.statIcon} />
-            <Text style={styles.statText}>6</Text>
+            <Image source={reward} style={styles.rewardIcon} />
+            <Text style={styles.statText}>{points}</Text>
           </View>
           <View style={styles.statItem}>
             <Image source={badge} style={styles.badgeIcon} />
             <Text style={styles.statText}>2</Text>
           </View>
           <View style={styles.statItem}>
-            <Image source={reward} style={styles.rewardIcon} />
-            <Text style={styles.statText}>{points}</Text>
+            <Image source={podium} style={styles.statIcon} />
+            <Text style={styles.statText}>6</Text>
           </View>
         </View>
 
@@ -155,13 +155,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statIcon: {
-    width: 45,
-    height: 42,
+    width: 40,
+    height: 45,
     resizeMode: 'contain',
   },
   rewardIcon: {
     width: 30,
-    height: 40,
+    height: 45,
     resizeMode: 'contain',
   },
   badgeIcon: {

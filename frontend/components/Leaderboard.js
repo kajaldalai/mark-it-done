@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 10,
   },
   title: {
     fontSize: 32,
@@ -88,16 +87,6 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     borderRadius: 30,
-    // marginBottom: 10,
-    // justifyContent: 'center'
-  },
-  topUserName: {
-    fontSize: 14,
-    color: '#000',
-  },
-  topUserScore: {
-    fontSize: 12,
-    color: '#744be5',
   },
   rankBadge: {
     position: 'absolute',
@@ -123,23 +112,29 @@ const styles = StyleSheet.create({
   },
   highlightedRow: {
     backgroundColor: '#e8def8',
+    width: '100%'
   },
   userRank: {
     width: 30,
     textAlign: 'center',
     fontSize: 16,
     color: '#000',
+    paddingLeft: 10,
+    fontWeight: '500'
   },
   userName: {
     flex: 1,
     fontSize: 16,
     color: '#000',
     paddingLeft: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    fontWeight: '500'
   },
   userScore: {
     fontSize: 16,
     color: '#744be5',
+    paddingRight: 16,
+    fontWeight: '600'
   },
   navigationBar: {
     flexDirection: 'row',

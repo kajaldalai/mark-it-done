@@ -73,7 +73,7 @@ topUser: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    marginBottom: 10,
+    marginBottom: 6,
   },
   topUserName: {
     fontSize: 16,
@@ -83,6 +83,7 @@ topUser: {
   topUserScore: {
     fontSize: 14,
     color: '#744be5',
+    fontWeight: '600'
   },
   rankBadge: {
     position: 'absolute',
