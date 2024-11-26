@@ -96,8 +96,12 @@ export const insertInitialUsers = () => {
 
 export const insertInitialRewards = () => {
   db.execSync(`
-    DELETE FROM rewards;
-    INSERT INTO rewards (name, points, image_url, is_locked) VALUES 
+    -- Only delete rewards that aren't referenced in user_rewards
+    DELETE FROM rewards 
+    WHERE id NOT IN (SELECT DISTINCT reward_id FROM user_rewards);
+    
+    -- Insert rewards only if they don't exist
+    INSERT OR IGNORE INTO rewards (name, points, image_url, is_locked) VALUES 
       ('Pizza Slice', 2500, 'pizza', 0),
       ('Coffee', 1500, 'coffee', 0),
       ('Donut', 2200, 'donut', 0),
@@ -204,7 +208,6 @@ export const redeemReward = async (userId, rewardId) => {
     }
 
     try {
-        // Start a transaction
         await db.runAsync('BEGIN TRANSACTION');
 
         // Get reward points
@@ -220,7 +223,7 @@ export const redeemReward = async (userId, rewardId) => {
         
         const points = reward[0].points;
         
-        // Update user points
+        // Update user points by subtracting the reward cost
         const result = await db.runAsync(
             'UPDATE users SET reward_points = reward_points - ? WHERE id = ? AND reward_points >= ?',
             [points, userId, points]

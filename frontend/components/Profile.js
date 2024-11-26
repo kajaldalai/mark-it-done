@@ -10,20 +10,25 @@ import podium from '../assets/images/podium.png';
 import github from '../assets/images/github.png';
 import location from '../assets/images/location.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserPoints } from './database';
 
 export const ProfileScreen = () => {
   const navigation = useNavigation();
   const [userName, setUserName] = React.useState('');
+  const [points, setPoints] = React.useState(0);
 
   React.useEffect(() => {
-    const getUserName = async () => {
+    const getUserData = async () => {
       const user = await AsyncStorage.getItem('user');
       if (user) {
         const parsedUser = JSON.parse(user);
         setUserName(parsedUser.name || '');
+        // Fetch points from database
+        const userPoints = await getUserPoints(parsedUser.id);
+        setPoints(userPoints);
       }
     };
-    getUserName();
+    getUserData();
   }, []);
 
   const handleNavigation = async (screen) => {
@@ -66,7 +71,7 @@ export const ProfileScreen = () => {
           </View>
           <View style={styles.statItem}>
             <Image source={reward} style={styles.rewardIcon} />
-            <Text style={styles.statText}>4500</Text>
+            <Text style={styles.statText}>{points}</Text>
           </View>
         </View>
 
