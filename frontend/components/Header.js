@@ -111,9 +111,9 @@ const headerStyles = StyleSheet.create({
     },
     notificationIcon: {
         alignItems: 'center',
-        marginLeft: '12%',
+        marginLeft: '8%',
         flexDirection: 'row',
-        width: 36,
+        width: 38,
         height: 35
     },
     notificationContainer: {
@@ -121,7 +121,7 @@ const headerStyles = StyleSheet.create({
     },
     rewardIcon: {
         alignItems: 'center',
-        marginLeft: '10%',
+        marginLeft: '8%',
         flexDirection: 'row',
         width: 34,
         height: 34
@@ -131,7 +131,7 @@ const headerStyles = StyleSheet.create({
     },
     badgeIcon: {
         alignItems: 'center',
-        marginLeft: '12%',
+        marginLeft: '8%',
         flexDirection: 'row',
         width: 36,
         height: 35

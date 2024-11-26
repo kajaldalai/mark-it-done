@@ -16,20 +16,6 @@ export const TaskList = ({
 }) => {
   const [userPoints, setUserPoints] = useState(0);
 
-  const getTaskIcon = (task) => {
-    if (task.status === 'inmotion') {
-      // Parse the due date from the string (assuming format "Due on Nov 11, 10:00am")
-      const dateStr = task.dueDate.replace('Due on ', '');
-      const dueDate = new Date(dateStr);
-      
-      if (isWithinDays(dueDate, 3)) {
-        return 'submitted';
-      }
-    }
-    
-    return task.rewardIcon;
-  };
-
   const handleSwipeLeft = async (taskId) => {
     if (allowLeftSwipe && nextStatus) {
       await updateTaskStatus(taskId, nextStatus);
@@ -110,7 +96,7 @@ export const TaskList = ({
               description={task.description}
               dueDate={task.dueDate}
               points={task.points}
-              rewardIcon={rewardImages[getTaskIcon(task)]}
+              rewardIcon={rewardImages[task.rewardIcon]}
               status={task.status}
               submitted_date={task.submitted_date}
             />

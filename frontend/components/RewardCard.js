@@ -16,7 +16,7 @@ const rewardImages = {
 export const RewardCard = ({ reward, onRedeem, userPoints }) => {
     const [showModal, setShowModal] = useState(false);
     const canRedeem = !reward.redeemed_at && userPoints >= reward.points;
-    const isLocked = userPoints < reward.points;
+    const isLocked = userPoints < reward.points && !reward.redeemed_at;
 
     const handleRedeem = () => {
         if (canRedeem) {
@@ -32,11 +32,12 @@ export const RewardCard = ({ reward, onRedeem, userPoints }) => {
     return (
         <>
             <TouchableOpacity 
-                style={[styles.card, !canRedeem && styles.disabledCard]}
+                style={[styles.card, !canRedeem && !isLocked && styles.disabledCard]}
                 onPress={handleRedeem}
                 disabled={!canRedeem || reward.redeemed_at}
             >
                 <View style={styles.cardContent}>
+                <Text style={styles.name}>{reward.name}</Text>
                     <Image 
                         source={rewardImages[reward.image_url]}
                         style={styles.image}
@@ -130,15 +131,21 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         backgroundColor: '#F8F8F8',
         alignItems: 'center',
+        justifyContent: 'center',
         position: 'relative',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 2,    
     },
     image: {
-        width: 60,
+        width: 55,
         height: 60,
         marginBottom: 8,
     },
     name: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '500',
         marginBottom: 4,
     },
@@ -164,8 +171,8 @@ const styles = StyleSheet.create({
     },
     lockedOverlay: {
         position: 'absolute',
-        top: 8,
-        right: 8,
+        top: -4,
+        right: -4,
     },
     lockIcon: {
         width: 20,
@@ -174,6 +181,8 @@ const styles = StyleSheet.create({
     cardContent: {
         width: '100%',
         alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
     },
     textContainer: {
         width: '100%',
@@ -185,7 +194,7 @@ const styles = StyleSheet.create({
     redeemButton: {
         backgroundColor: '#7a4de8',
         paddingHorizontal: 16,
-        paddingVertical: 8,
+        paddingVertical: 4,
         borderRadius: 15,
         marginTop: 10,
     },
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 24,
         alignItems: 'center',
-        width: '85%',
+        width: '80%',
         elevation: 5,
     },
     modalImage: {
@@ -273,13 +282,13 @@ const styles = StyleSheet.create({
     },
     cancelButtonText: {
         color: '#7a4de8',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '600',
         textAlign: 'center',
     },
     confirmButtonText: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '600',
         textAlign: 'center',
     },

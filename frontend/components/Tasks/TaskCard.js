@@ -5,7 +5,24 @@ import submitted from '../../assets/images/submitted.png';
 import { BlurView } from 'expo-blur';
 
 export const TaskCard = ({ title, description, dueDate, submitted_date, points, rewardIcon, status }) => {
-  const timeIcon = status === 'victorylap' ? submitted : clock;
+  const getTimeIcon = () => {
+    if (status === 'victorylap') return submitted;
+    
+    if (dueDate) {
+      const date = new Date(dueDate);
+      const now = new Date();
+      const diffTime = date.getTime() - now.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays <= 3) {
+        return require('../../assets/images/redclock.png');
+      }
+    }
+    
+    return clock;
+  };
+
+  const timeIcon = getTimeIcon();
 
   const formatDate = () => {
     if (!dueDate) return '';
@@ -25,16 +42,11 @@ export const TaskCard = ({ title, description, dueDate, submitted_date, points, 
       const now = new Date();
       const diffTime = date.getTime() - now.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
       
       if (diffDays > 1) {
         return `Due in ${diffDays} days`;
-      } else if (diffDays === 1) {
-        return `Due in 1 day`;
-      } else if (diffHours > 0) {
-        return `Due in ${diffHours} hours`;
       } else {
-        return 'Due now';
+        return `Due in a day`;
       }
     }
     

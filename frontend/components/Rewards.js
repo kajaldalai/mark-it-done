@@ -132,11 +132,12 @@ const styles = StyleSheet.create({
     tabContainer: {
         flexDirection: 'row',
         padding: 16,
-        gap: 12,
+        gap: 10,
+        justifyContent: 'center',
     },
     tab: {
         flex: 1,
-        paddingVertical: 12,
+        paddingVertical: 8,
         borderRadius: 8,
         backgroundColor: '#F5F5F5',
         alignItems: 'center',
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#7a4de8',
     },
     tabText: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#666',
     },
     activeTabText: {
