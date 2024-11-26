@@ -38,6 +38,8 @@ export const ProfileScreen = () => {
         index: 0,
         routes: [{ name: 'Login' }],
       });
+    } else if (screen === 'Task') {
+      navigation.navigate('Task', { initialTab: 'victorylap' });
     } else {
       navigation.navigate(screen);
     }
@@ -77,7 +79,7 @@ export const ProfileScreen = () => {
 
         <View style={styles.menuContainer}>
           {[
-            { name: 'All Completed Tasks', screen: 'Tasks' },
+            { name: 'All Completed Tasks', screen: 'Task' },
             { name: 'Rewards', screen: 'Rewards' },
             { name: 'Leaderboard', screen: 'Leaderboard' },
             { name: 'Notifications', screen: 'Notifications' },

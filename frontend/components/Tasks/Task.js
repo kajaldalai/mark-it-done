@@ -19,17 +19,20 @@ const rewardImages = {
   submitted: require('../../assets/images/submitted.png'),
 };
 
-export const Task = () => {
+export const Task = ({ route }) => {
   const [kickoffTasks, setKickoffTasks] = useState([]);
   const [inMotionTasks, setInMotionTasks] = useState([]);
   const [victoryLapTasks, setVictoryLapTasks] = useState([]);
-  const [activeTab, setActiveTab] = useState('kickoff');
+  const [activeTab, setActiveTab] = useState(route?.params?.initialTab || 'kickoff');
   const [pointsRefreshTrigger, setPointsRefreshTrigger] = useState(0);
   const [points, setPoints] = React.useState(0);
 
   useEffect(() => {
+    if (route?.params?.initialTab) {
+      setActiveTab(route.params.initialTab);
+    }
     loadTasks();
-  }, []);
+  }, [route?.params?.initialTab]);
 
   const loadTasks = async () => {
     const kickoff = await getTasks('kickoff');
