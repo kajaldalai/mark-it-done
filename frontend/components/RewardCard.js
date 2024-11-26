@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import rewardIcon from '../assets/images/reward.png'
 import lock from '../assets/images/lock.png'
 
@@ -14,69 +14,112 @@ const rewardImages = {
 };
 
 export const RewardCard = ({ reward, onRedeem, userPoints }) => {
+    const [showModal, setShowModal] = useState(false);
     const canRedeem = !reward.is_locked && (!reward.redeemed_at) && userPoints >= reward.points;
 
     const handleRedeem = () => {
         if (canRedeem) {
-            Alert.alert(
-                "Redeem Reward",
-                `Are you sure you want to redeem ${reward.name} for ${reward.points} points?`,
-                [
-                    { text: "Cancel", style: "cancel" },
-                    { text: "Redeem", onPress: () => onRedeem(reward.id) }
-                ]
-            );
+            setShowModal(true);
         }
     };
 
+    const confirmRedeem = () => {
+        setShowModal(false);
+        onRedeem(reward.id);
+    };
+
     return (
-        <TouchableOpacity 
-            style={[styles.card, !canRedeem && styles.disabledCard]}
-            onPress={handleRedeem}
-            disabled={!canRedeem || reward.redeemed_at}
-        >
-            <View style={styles.cardContent}>
-                <Image 
-                    source={rewardImages[reward.image_url]}
-                    style={styles.image}
-                />
-                <View style={styles.textContainer}>
-                    <Text style={styles.name}>{reward.name}</Text>
-                    <View style={styles.pointsContainer}>
-                        <Image 
-                            source={rewardIcon}
-                            style={styles.diamond}
-                        />
-                        <Text style={styles.points}>{reward.points}</Text>
+        <>
+            <TouchableOpacity 
+                style={[styles.card, !canRedeem && styles.disabledCard]}
+                onPress={handleRedeem}
+                disabled={!canRedeem || reward.redeemed_at}
+            >
+                <View style={styles.cardContent}>
+                    <Image 
+                        source={rewardImages[reward.image_url]}
+                        style={styles.image}
+                    />
+                    <View style={styles.textContainer}>
+                        <Text style={styles.name}>{reward.name}</Text>
+                        <View style={styles.pointsContainer}>
+                            <Image 
+                                source={rewardIcon}
+                                style={styles.diamond}
+                            />
+                            <Text style={styles.points}>{reward.points}</Text>
+                        </View>
+                        {reward.expiry_date && (
+                            <Text style={styles.expiry}>
+                                {new Date(reward.expiry_date).toLocaleDateString()}
+                            </Text>
+                        )}
                     </View>
-                    {reward.expiry_date && (
-                        <Text style={styles.expiry}>
-                            {new Date(reward.expiry_date).toLocaleDateString()}
-                        </Text>
+                    {reward.is_locked && (
+                        <View style={styles.lockedOverlay}>
+                            <Image 
+                                source={lock}
+                                style={styles.lockIcon}
+                            />
+                        </View>
+                    )}
+                    {reward.redeemed_at ? (
+                        <View style={styles.redeemedBadge}>
+                            <Text style={styles.redeemedText}>Redeemed</Text>
+                        </View>
+                    ) : canRedeem && (
+                        <TouchableOpacity 
+                            style={styles.redeemButton}
+                            onPress={handleRedeem}
+                        >
+                            <Text style={styles.redeemButtonText}>Redeem</Text>
+                        </TouchableOpacity>
                     )}
                 </View>
-                {reward.is_locked && (
-                    <View style={styles.lockedOverlay}>
+            </TouchableOpacity>
+            
+            <Modal
+                transparent={true}
+                visible={showModal}
+                animationType="fade"
+                onRequestClose={() => setShowModal(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
                         <Image 
-                            source={lock}
-                            style={styles.lockIcon}
+                            source={rewardImages[reward.image_url]}
+                            style={styles.modalImage}
                         />
+                        <Text style={styles.modalTitle}>Redeem Reward</Text>
+                        <Text style={styles.modalText}>
+                            Are you sure you want to redeem
+                        </Text>
+                        <Text style={styles.rewardName}>{reward.name}</Text>
+                        <View style={styles.modalPoints}>
+                            <Image 
+                                source={rewardIcon}
+                                style={styles.modalDiamond}
+                            />
+                            <Text style={styles.pointsText}>{reward.points}</Text>
+                        </View>
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity 
+                                style={[styles.modalButton, styles.cancelButton]}
+                                onPress={() => setShowModal(false)}
+                            >
+                                <Text style={styles.cancelButtonText}>Maybe Later</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                style={[styles.modalButton, styles.confirmButton]}
+                                onPress={confirmRedeem}
+                            >
+                                <Text style={styles.confirmButtonText}>Heck Yeah!</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                )}
-                {reward.redeemed_at ? (
-                    <View style={styles.redeemedBadge}>
-                        <Text style={styles.redeemedText}>Redeemed</Text>
-                    </View>
-                ) : canRedeem && (
-                    <TouchableOpacity 
-                        style={styles.redeemButton}
-                        onPress={handleRedeem}
-                    >
-                        <Text style={styles.redeemButtonText}>Redeem</Text>
-                    </TouchableOpacity>
-                )}
-            </View>
-        </TouchableOpacity>
+                </View>
+            </Modal>
+        </>
     );
 };
 
@@ -106,7 +149,7 @@ const styles = StyleSheet.create({
         gap: 4,
     },
     diamond: {
-        width: 16,
+        width: 20,
         height: 16,
     },
     points: {
@@ -161,5 +204,89 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 12,
         fontWeight: '500',
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 24,
+        alignItems: 'center',
+        width: '80%',
+        elevation: 5,
+    },
+    modalImage: {
+        width: 80,
+        height: 80,
+        marginBottom: 16,
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#333',
+        marginBottom: 12,
+    },
+    modalText: {
+        fontSize: 16,
+        color: '#666',
+        textAlign: 'center',
+    },
+    rewardName: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#7a4de8',
+        marginVertical: 8,
+    },
+    modalPoints: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        marginVertical: 16,
+        backgroundColor: '#f0ebff',
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderRadius: 12,
+    },
+    modalDiamond: {
+        width: 28,
+        height: 20,
+    },
+    pointsText: {
+        fontSize: 15,
+        fontWeight: '600',
+        // color: '#7a4de8',
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        gap: 10,
+        marginTop: 16,
+    },
+    modalButton: {
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 16,
+        minWidth: 120,
+    },
+    cancelButton: {
+        backgroundColor: '#f0ebff',
+    },
+    confirmButton: {
+        backgroundColor: '#7a4de8',
+    },
+    cancelButtonText: {
+        color: '#7a4de8',
+        fontSize: 16,
+        fontWeight: '600',
+        textAlign: 'center',
+    },
+    confirmButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '600',
+        textAlign: 'center',
     },
 }); 
