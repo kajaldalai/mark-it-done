@@ -94,20 +94,21 @@ const headerStyles = StyleSheet.create({
     },
     userName: {
         fontFamily: 'Acme',
-        fontWeight: '400',
+        fontWeight: '600',
         fontSize: 16,
         lineHeight: 24,
         color: '#101828',
     },
     userStatus: {
         fontFamily: 'Acme',
-        fontWeight: '400',
+        fontWeight: '500',
         fontSize: 12,
         lineHeight: 18,
         color: '#475467',
     },
     iconText: {
         fontSize: 12,
+        fontWeight: '500',
     },
     notificationIcon: {
         alignItems: 'center',

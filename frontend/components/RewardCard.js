@@ -158,7 +158,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 4,
-        marginTop: 8
+        // marginTop: 4,
+        marginBottom: 4,
     },
     diamond: {
         width: 20,

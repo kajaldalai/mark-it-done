@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   pageTitle: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#744be5',
     marginVertical: 20,

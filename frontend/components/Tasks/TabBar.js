@@ -52,7 +52,7 @@ const tabBarStyles = StyleSheet.create({
     tabText: {
         textAlign: 'center',
         fontFamily: 'Inter',
-        fontWeight: '600',
+        fontWeight: 'bold',
         fontSize: 12,
         lineHeight: 14.52,
         color: '#744be5'
