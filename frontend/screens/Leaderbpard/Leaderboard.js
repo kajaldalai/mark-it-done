@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { LeaderboardTop } from './LeaderboardTop'
-import user4 from '../assets/images/user4.png'
-import user5 from '../assets/images/user5.png'
-import user6 from '../assets/images/user6.png'
-import user7 from '../assets/images/user7.png'
-import user8 from '../assets/images/user8.png'
-import user9 from '../assets/images/user9.png'
-import avatar from '../assets/images/avatar.png'
-import { NavigationBar } from './Navbar';
+import user4 from '../../assets/images/user4.png'
+import user5 from '../../assets/images/user5.png'
+import user6 from '../../assets/images/user6.png'
+import user7 from '../../assets/images/user7.png'
+import user8 from '../../assets/images/user8.png'
+import user9 from '../../assets/images/user9.png'
+import avatar from '../../assets/images/avatar.png'
+import { NavigationBar } from '../../components/Navbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Leaderboard = () => {

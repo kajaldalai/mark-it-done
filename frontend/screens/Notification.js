@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
-import { Header } from './Header';
-import NavigationBar from './Navbar';
+import { Header } from '../components/Header';
+import NavigationBar from '../components/Navbar';
 
 const NotificationItem = ({ title, description, time, reward }) => {
   return (

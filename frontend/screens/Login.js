@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import google from '../assets/images/google.png'
-import { authenticateUser } from './database';
+import { authenticateUser } from '../database';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({ navigation }) {

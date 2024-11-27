@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationBar } from './Navbar';
+import { NavigationBar } from '../components/Navbar';
 import avatar from '../assets/images/avatar.png';
 import reward from '../assets/images/reward.png';
 import badge from '../assets/images/badge.png';
@@ -10,7 +10,7 @@ import podium from '../assets/images/podium.png';
 import github from '../assets/images/github.png';
 import location from '../assets/images/location.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUserPoints } from './database';
+import { getUserPoints } from '../database';
 
 export const ProfileScreen = () => {
   const navigation = useNavigation();

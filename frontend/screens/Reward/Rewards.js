@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, FlatList, Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Header } from './Header'
-import { NavigationBar } from './Navbar'
+import { Header } from '../../components/Header'
+import { NavigationBar } from '../../components/Navbar'
 import { RewardCard } from './RewardCard'
-import { getRewards, getUserPoints, redeemReward } from './database'
+import { getRewards, getUserPoints, redeemReward } from '../../database'
 import { LogBox } from 'react-native';
 
 // Ignore the specific text string warning

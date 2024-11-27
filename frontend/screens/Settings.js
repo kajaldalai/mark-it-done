@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { NavigationBar } from './Navbar';
-import { Header } from './Header';
+import { NavigationBar } from '../components/Navbar';
+import { Header } from '../components/Header';
 import comingsoon from '../assets/images/comingsoon.png';
 
-export const ReferralScreen = () => {
+export const SettingsScreen = () => {
   return (
     <View style={styles.container}>
       <Header />
 
       <View style={styles.content}>
-        <Text style={styles.title}>Referral</Text>
+        <Text style={styles.title}>Preferences & Settings</Text>
 
         <View style={styles.comingSoonContainer}>
           <Image

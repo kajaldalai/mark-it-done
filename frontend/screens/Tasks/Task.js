@@ -1,14 +1,12 @@
 // App.js
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
-import { initDatabase, insertInitialTasks, getTasks, getCompletedTasks } from "../database";
+import { initDatabase, insertInitialTasks, getTasks, getCompletedTasks, getUserPoints } from "../../database";
 import { TaskList } from "./TaskList";
-import { Header } from '../Header';
-import { NavigationBar } from '../Navbar';
+import { Header } from '../../components/Header';
+import { NavigationBar } from '../../components/Navbar';
 import { TabBar } from './TabBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUserPoints } from '../database';
-
 
 const rewardImages = {
   bluereward: require('../../assets/images/bluereward.png'),
@@ -55,7 +53,7 @@ export const Task = ({ route }) => {
       setPoints(points);
     };
   }
-  
+
   const handleRefresh = async () => {
     const userPoints = await getUserPoints(parsedUser.id);
     // setPoints(userPoints);

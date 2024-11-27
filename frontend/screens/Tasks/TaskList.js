@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Animated, Image } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TaskCard } from './TaskCard';
-import { updateTaskStatus } from '../database';
+import { updateTaskStatus } from '../../database';
 
 export const TaskList = ({ 
   tasks, 

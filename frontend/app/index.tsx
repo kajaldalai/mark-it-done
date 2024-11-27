@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import WelcomeScreen from '../components/Welcome';
-import LoginScreen from '../components/Login';
-import { Task } from '../components/Tasks/Task'
-import { Leaderboard } from '../components/Leaderboard'
-import { Rewards } from '../components/Rewards'
-import { ProfileScreen } from '../components/Profile'
+import WelcomeScreen from '../screens/Welcome';
+import LoginScreen from '../screens/Login';
+import { Task } from '../screens/Tasks/Task'
+import { Leaderboard } from '../screens/Leaderbpard/Leaderboard'
+import { Rewards } from '../screens/Reward/Rewards'
+import { ProfileScreen } from '../screens/Profile'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { initDatabase, insertInitialTasks } from '@/components/database';
-import { ReferralScreen } from '../components/ReferralScreen';
-import { SettingsScreen } from '../components/Settings';
-import { NotificationsScreen } from '../components/NotificationsScreen';
+import { initDatabase, insertInitialTasks } from '../database';
+import { ReferralScreen } from '../screens/Referral';
+import { SettingsScreen } from '../screens/Settings';
+import { NotificationsScreen } from '../screens/Notification';
 
 const Stack = createStackNavigator();
 

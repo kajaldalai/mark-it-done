@@ -6,7 +6,7 @@ import badge from '../assets/images/badge.png';
 import notification from '../assets/images/notification.png';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUserPoints } from './database';
+import { getUserPoints } from '../database';
 
 export const Header = ({ refreshTrigger }) => {
     const navigation = useNavigation();

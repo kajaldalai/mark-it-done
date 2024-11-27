@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Modal } from 'react-native';
-import rewardIcon from '../assets/images/reward.png'
-import lock from '../assets/images/lock.png'
+import rewardIcon from '../../assets/images/reward.png'
+import lock from '../../assets/images/lock.png'
 
 // Import all reward images
 const rewardImages = {
-    pizza: require('../assets/images/pizza.png'),
-    coffee: require('../assets/images/coffee.png'),
-    donut: require('../assets/images/donut.png'),
-    chocomuffin: require('../assets/images/chocomuffin.png'),
-    cupcake: require('../assets/images/cupcake.png'),
-    hotdog: require('../assets/images/hotdog.png'),
+    pizza: require('../../assets/images/pizza.png'),
+    coffee: require('../../assets/images/coffee.png'),
+    donut: require('../../assets/images/donut.png'),
+    chocomuffin: require('../../assets/images/chocomuffin.png'),
+    cupcake: require('../../assets/images/cupcake.png'),
+    hotdog: require('../../assets/images/hotdog.png'),
 };
 
 export const RewardCard = ({ reward, onRedeem, userPoints }) => {
