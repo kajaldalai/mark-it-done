@@ -5,7 +5,6 @@ const db = SQLite.openDatabaseSync('tasks.db');
 
 // Initialize database tables
 export const initDatabase = () => {
-  // First drop all tables to ensure clean slate
   db.execSync(`
     DROP TABLE IF EXISTS user_rewards;
     DROP TABLE IF EXISTS rewards;
@@ -13,7 +12,6 @@ export const initDatabase = () => {
     DROP TABLE IF EXISTS users;
   `);
 
-  // Then create tables with new schema
   db.execSync(`
     PRAGMA foreign_keys = ON;
     
@@ -54,7 +52,6 @@ export const initDatabase = () => {
     );
   `);
 
-  // Call initial data insertion
   insertInitialUsers();
   insertInitialTasks();
   insertInitialRewards();
@@ -141,11 +138,9 @@ export const updateTaskStatus = async (taskId, newStatus) => {
     const task = await db.getAllAsync('SELECT points FROM tasks WHERE id = ?', [taskId]);
     const taskPoints = task[0]?.points || 0;
 
-    // Begin transaction to ensure both updates succeed or fail together
     await db.runAsync('BEGIN TRANSACTION');
 
     try {
-      // Update task status
       await db.runAsync(
         `UPDATE tasks 
          SET status = ?,
@@ -156,7 +151,6 @@ export const updateTaskStatus = async (taskId, newStatus) => {
         [newStatus, currentDate, taskId]
       );
 
-      // Get the current user from AsyncStorage and update their points
       const user = JSON.parse(await AsyncStorage.getItem('user'));
       if (!user?.id) {
         throw new Error('No user found');
@@ -246,7 +240,6 @@ export const redeemReward = async (userId, rewardId) => {
   try {
     await db.runAsync('BEGIN TRANSACTION');
 
-    // Get reward points
     const reward = await db.getAllAsync(
       'SELECT points FROM rewards WHERE id = ?',
       [rewardId]
@@ -279,7 +272,6 @@ export const redeemReward = async (userId, rewardId) => {
             VALUES (?, ?, ?)
         `, [userId, rewardId, expiryDate.toISOString()]);
 
-    // Commit the transaction
     await db.runAsync('COMMIT');
   } catch (error) {
     await db.runAsync('ROLLBACK');

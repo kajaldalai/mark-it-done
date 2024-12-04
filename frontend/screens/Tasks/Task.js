@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { initDatabase, insertInitialTasks, getTasks, getCompletedTasks, getUserPoints } from "../../database";
@@ -53,13 +52,6 @@ export const Task = ({ route }) => {
       setPoints(points);
     };
   }
-
-  const handleRefresh = async () => {
-    const userPoints = await getUserPoints(parsedUser.id);
-    // setPoints(userPoints);
-    // await loadTasks();
-    setPointsRefreshTrigger(userPoints);
-  };
 
   return (
     <>

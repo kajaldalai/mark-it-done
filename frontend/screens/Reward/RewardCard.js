@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Modal } from 'react-na
 import rewardIcon from '../../assets/images/reward.png'
 import lock from '../../assets/images/lock.png'
 
-// Import all reward images
 const rewardImages = {
     pizza: require('../../assets/images/pizza.png'),
     coffee: require('../../assets/images/coffee.png'),

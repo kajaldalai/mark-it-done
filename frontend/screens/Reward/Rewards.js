@@ -8,7 +8,6 @@ import { RewardCard } from './RewardCard'
 import { getRewards, getUserPoints, redeemReward } from '../../database'
 import { LogBox } from 'react-native';
 
-// Ignore the specific text string warning
 LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);
 
 export const Rewards = () => {

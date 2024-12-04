@@ -23,7 +23,6 @@ export const ProfileScreen = () => {
       if (user) {
         const parsedUser = JSON.parse(user);
         setUserName(parsedUser.name || '');
-        // Fetch points from database
         const userPoints = await getUserPoints(parsedUser.id);
         setPoints(userPoints);
       }
