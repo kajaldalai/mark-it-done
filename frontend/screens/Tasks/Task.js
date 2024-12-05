@@ -70,6 +70,7 @@ export const Task = ({ route }) => {
               allowLeftSwipe={true}
               allowRightSwipe={false}
               nextStatus="inmotion"
+              setActiveTab={setActiveTab}
             />
           )}
           {activeTab === 'inmotion' && (
@@ -81,6 +82,7 @@ export const Task = ({ route }) => {
               allowRightSwipe={true}
               nextStatus="victorylap"
               previousStatus="kickoff"
+              setActiveTab={setActiveTab}
             />
           )}
           {activeTab === 'victorylap' && (
@@ -90,6 +92,7 @@ export const Task = ({ route }) => {
               onRefresh={loadTasks}
               allowLeftSwipe={false}
               allowRightSwipe={false}
+              setActiveTab={setActiveTab}
             />
           )}
         </View>

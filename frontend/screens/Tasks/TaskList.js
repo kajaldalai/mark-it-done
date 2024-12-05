@@ -11,7 +11,8 @@ export const TaskList = ({
   allowLeftSwipe,
   allowRightSwipe,
   nextStatus,
-  previousStatus 
+  previousStatus,
+  setActiveTab
 }) => {
   const [userPoints, setUserPoints] = useState(0);
 
@@ -19,6 +20,7 @@ export const TaskList = ({
     if (allowLeftSwipe && nextStatus) {
       await updateTaskStatus(taskId, nextStatus);
       onRefresh();
+      setActiveTab(nextStatus);
     }
   };
 
@@ -26,6 +28,7 @@ export const TaskList = ({
     if (allowRightSwipe && previousStatus) {
       await updateTaskStatus(taskId, previousStatus);
       onRefresh();
+      setActiveTab(previousStatus);
     }
   };
 

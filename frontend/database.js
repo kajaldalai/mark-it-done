@@ -64,22 +64,22 @@ export const insertInitialTasks = () => {
     -- Kickoff Tasks
     INSERT INTO tasks (title, description, dueDate, points, rewardIcon, status)
     VALUES 
-      ('CS495 Assignment 4', 'Set the wheels in motion. Greatness starts with first step.', '2024-11-29', 400, 'bluereward', 'kickoff'),
-      ('CS585 Homework 3', 'A quick win awaits! Let''s cross something off that list!', '2024-11-30', 150, 'yellowreward', 'kickoff'),
-      ('CS450 Project Proposal', 'Today''s the day, let''s crush it!', '2024-12-02', 300, 'redreward', 'kickoff'),
-      ('CS581 Quiz 5', 'I know I am here for a while, but your attention would make my day!', '2024-12-02', 500, 'multireward', 'kickoff');
+      ('CS495 Assignment 4', 'Set the wheels in motion. Greatness starts with first step.', '2024-12-06', 400, 'bluereward', 'kickoff'),
+      ('CS585 Homework 3', 'A quick win awaits! Let''s cross something off that list!', '2024-11-10', 150, 'yellowreward', 'kickoff'),
+      ('CS450 Project Proposal', 'Today''s the day, let''s crush it!', '2024-12-12', 300, 'redreward', 'kickoff'),
+      ('CS581 Quiz 5', 'I know I am here for a while, but your attention would make my day!', '2024-12-13', 500, 'multireward', 'kickoff');
 
     -- In Motion Tasks
     INSERT INTO tasks (title, description, dueDate, points, rewardIcon, status)
     VALUES 
-      ('CS401 Project Phase 2', 'Making progress! Keep the momentum going.', '2024-11-27', 350, 'bluereward', 'inmotion'),
-      ('CS510 Research Paper', 'Almost halfway there. Stay focused!', '2024-11-29', 250, 'yellowreward', 'inmotion');
+      ('CS401 Project Phase 2', 'Making progress! Keep the momentum going.', '2024-12-05', 350, 'bluereward', 'inmotion'),
+      ('CS510 Research Paper', 'Almost halfway there. Stay focused!', '2024-11-08', 250, 'yellowreward', 'inmotion');
 
     -- Victory Lap Tasks
     INSERT INTO tasks (title, description, dueDate, submitted_date, points, rewardIcon, status)
     VALUES 
-      ('CS460 Lab Report', 'Great job completing this task! 🎉', '2024-11-10', '2024-11-05', 200, 'redreward', 'victorylap'),
-      ('CS590 Presentation', 'Successfully delivered and well received! 🥳', '2024-11-15', '2024-11-08', 450, 'multireward', 'victorylap');
+      ('CS460 Lab Report', 'Great job completing this task! 🎉', '2024-11-30', '2024-11-05', 200, 'redreward', 'victorylap'),
+      ('CS590 Presentation', 'Successfully delivered and well received! 🥳', '2024-12-02', '2024-11-08', 450, 'multireward', 'victorylap');
   `);
 };
 
